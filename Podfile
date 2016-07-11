@@ -8,5 +8,6 @@ target 'Picture Map' do
   # Pods for Picture Map
   pod 'Firebase'
   pod 'GoogleMaps'
+  pod 'GoogleSignIn'
 
 end
