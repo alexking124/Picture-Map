@@ -7,6 +7,9 @@ target 'Picture Map' do
 
   # Pods for Picture Map
   pod 'Firebase'
+  pod 'Firebase/Auth'
+  pod 'Firebase/Database'
+  pod 'Firebase/Storage'
   pod 'GoogleMaps'
   pod 'GoogleSignIn'
 

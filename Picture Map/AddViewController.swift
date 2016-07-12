@@ -7,7 +7,9 @@
 //
 
 import UIKit
+import FirebaseDatabase
 import GoogleMaps
+import GoogleSignIn
 
 class AddViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
@@ -15,6 +17,7 @@ class AddViewController: UIViewController, UIImagePickerControllerDelegate, UINa
     @IBOutlet weak var markerImageView: UIImageView!
     @IBOutlet weak var imagePreview: UIImageView!
     
+    var doneButton: UIBarButtonItem?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,9 +27,22 @@ class AddViewController: UIViewController, UIImagePickerControllerDelegate, UINa
         previewMapView.bringSubviewToFront(markerImageView)
         
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Back", style: UIBarButtonItemStyle.Plain, target: self, action: #selector(backPressed))
+        doneButton = UIBarButtonItem(title: "Done", style: .Plain, target: self, action: #selector(donePressed))
+        doneButton?.enabled = false
+        self.navigationItem.rightBarButtonItem = doneButton
     }
     
     func backPressed() {
+        self.presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    func donePressed() {
+        let testData = ["email": GIDSignIn.sharedInstance().currentUser.profile.email, "data": "test"]
+        let databaseReference = FIRDatabase.database().reference()
+        let test = databaseReference.child("test").childByAutoId()
+        test.setValue(testData)
+        
+        
         self.presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
     }
     
@@ -39,6 +55,7 @@ class AddViewController: UIViewController, UIImagePickerControllerDelegate, UINa
     func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
         imagePreview.image = info[UIImagePickerControllerOriginalImage] as? UIImage
         self.dismissViewControllerAnimated(true, completion: nil)
+        self.doneButton?.enabled = true
     }
     
     func imagePickerControllerDidCancel(picker: UIImagePickerController) {
