@@ -36,9 +36,11 @@ class MapViewController: UIViewController, GIDSignInDelegate, GIDSignInUIDelegat
         }
     }
     
-    func signIn(signIn: GIDSignIn!, didSignInForUser user: GIDGoogleUser!, withError error: NSError?) {        
-        self.currentUser = user
-        self.profileImageView.downloadImageFrom(user.profile.imageURLWithDimension(UInt(self.profileImageView.frame.width)).absoluteString)
+    func signIn(signIn: GIDSignIn!, didSignInForUser user: GIDGoogleUser!, withError error: NSError?) {
+        if let user = user {
+            self.currentUser = user
+            self.profileImageView.downloadImageFrom(user.profile.imageURLWithDimension(UInt(self.profileImageView.frame.width)).absoluteString)
+        }
     }
 
     @IBAction func addButtonTapped(sender: AnyObject) {
