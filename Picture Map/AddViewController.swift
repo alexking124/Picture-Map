@@ -9,10 +9,11 @@
 import UIKit
 import GoogleMaps
 
-class AddViewController: UIViewController {
+class AddViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     @IBOutlet weak var previewMapView: GMSMapView!
     @IBOutlet weak var markerImageView: UIImageView!
+    @IBOutlet weak var imagePreview: UIImageView!
     
     
     override func viewDidLoad() {
@@ -27,5 +28,20 @@ class AddViewController: UIViewController {
     
     func backPressed() {
         self.presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    @IBAction func pickImage(sender: AnyObject) {
+        let imagePicker = UIImagePickerController()
+        imagePicker.delegate = self
+        self .presentViewController(imagePicker, animated: true, completion: nil)
+    }
+    
+    func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
+        imagePreview.image = info[UIImagePickerControllerOriginalImage] as? UIImage
+        self.dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    func imagePickerControllerDidCancel(picker: UIImagePickerController) {
+        self.dismissViewControllerAnimated(true, completion: nil)
     }
 }

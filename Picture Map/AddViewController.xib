@@ -9,6 +9,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="AddViewController" customModule="Picture_Map" customModuleProvider="target">
             <connections>
+                <outlet property="imagePreview" destination="egN-Tx-nd4" id="4aw-wp-LHu"/>
                 <outlet property="markerImageView" destination="LKg-mS-88f" id="Pwh-vT-GdC"/>
                 <outlet property="previewMapView" destination="EBd-qn-Bwc" id="uaf-HG-SRs"/>
                 <outlet property="view" destination="iN0-l3-epB" id="IhK-dC-DAb"/>
@@ -20,7 +21,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EBd-qn-Bwc" customClass="GMSMapView">
-                    <rect key="frame" x="50" y="91" width="500" height="130"/>
+                    <rect key="frame" x="50" y="100" width="500" height="130"/>
                     <subviews>
                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Pin Marker" translatesAutoresizingMaskIntoConstraints="NO" id="LKg-mS-88f">
                             <rect key="frame" x="237.5" y="30" width="26" height="35"/>
@@ -37,13 +38,54 @@
                         <constraint firstAttribute="height" constant="130" id="ryQ-gS-AFj"/>
                     </constraints>
                 </view>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7DM-3X-X8h">
+                    <rect key="frame" x="252.5" y="297" width="95" height="30"/>
+                    <state key="normal" title="Pick an image"/>
+                    <connections>
+                        <action selector="pickImage:" destination="-1" eventType="touchUpInside" id="7qc-1k-2aE"/>
+                    </connections>
+                </button>
+                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="egN-Tx-nd4">
+                    <rect key="frame" x="50" y="248" width="500" height="128"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="128" id="iUG-jI-Xqr"/>
+                    </constraints>
+                </imageView>
+                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Title" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Vd7-hD-vx7">
+                    <rect key="frame" x="50" y="384" width="500" height="30"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="30" id="4oP-Sv-ytj"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <textInputTraits key="textInputTraits"/>
+                </textField>
+                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="5dh-tl-PyI">
+                    <rect key="frame" x="50" y="422" width="500" height="60"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="60" id="mfl-43-txf"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                </textView>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstItem="EBd-qn-Bwc" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="50" id="B1t-bo-bey"/>
-                <constraint firstItem="EBd-qn-Bwc" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="91" id="Mtn-50-QS0"/>
+                <constraint firstItem="5dh-tl-PyI" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="ECT-bD-qDj"/>
+                <constraint firstItem="egN-Tx-nd4" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="EHg-7P-b6y"/>
+                <constraint firstItem="EBd-qn-Bwc" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="100" id="Mtn-50-QS0"/>
+                <constraint firstItem="7DM-3X-X8h" firstAttribute="centerY" secondItem="egN-Tx-nd4" secondAttribute="centerY" id="Sgv-AH-CWc"/>
+                <constraint firstItem="7DM-3X-X8h" firstAttribute="centerX" secondItem="egN-Tx-nd4" secondAttribute="centerX" id="SvZ-az-agX"/>
+                <constraint firstItem="egN-Tx-nd4" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="50" id="TNS-93-zvy"/>
+                <constraint firstItem="Vd7-hD-vx7" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="U8f-Kl-OWw"/>
+                <constraint firstItem="5dh-tl-PyI" firstAttribute="top" secondItem="Vd7-hD-vx7" secondAttribute="bottom" constant="8" id="UnY-Hm-MMG"/>
                 <constraint firstItem="EBd-qn-Bwc" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="W6I-DW-peL"/>
+                <constraint firstItem="5dh-tl-PyI" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="50" id="fYC-dK-uaV"/>
                 <constraint firstAttribute="trailing" secondItem="EBd-qn-Bwc" secondAttribute="trailing" constant="100" id="lxc-TI-1RQ"/>
+                <constraint firstItem="Vd7-hD-vx7" firstAttribute="top" secondItem="egN-Tx-nd4" secondAttribute="bottom" constant="8" id="ojj-0H-9Bp"/>
+                <constraint firstItem="egN-Tx-nd4" firstAttribute="top" secondItem="EBd-qn-Bwc" secondAttribute="bottom" constant="18" id="sQD-HK-YXw"/>
+                <constraint firstItem="Vd7-hD-vx7" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="50" id="tdb-zP-TN9"/>
             </constraints>
             <variation key="default">
                 <mask key="constraints">
