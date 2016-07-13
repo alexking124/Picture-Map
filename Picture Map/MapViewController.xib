@@ -3,6 +3,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MapViewController" customModule="Picture_Map" customModuleProvider="target">
@@ -30,7 +31,11 @@
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8hb-wp-tBw">
-                    <rect key="frame" x="8" y="28" width="48" height="48"/>
+                    <rect key="frame" x="8" y="28" width="40" height="40"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="40" id="4Tf-rP-eRM"/>
+                        <constraint firstAttribute="width" secondItem="8hb-wp-tBw" secondAttribute="height" multiplier="1:1" id="vG6-9V-pm5"/>
+                    </constraints>
                     <state key="normal" backgroundImage="account_circle"/>
                     <connections>
                         <action selector="profileButtonTapped:" destination="-1" eventType="touchUpInside" id="Ygj-8W-0o4"/>

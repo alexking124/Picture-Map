@@ -7,7 +7,11 @@
 //
 
 import UIKit
+import Photos
+
+import FirebaseAuth
 import FirebaseDatabase
+import FirebaseStorage
 import GoogleMaps
 import GoogleSignIn
 
@@ -18,6 +22,7 @@ class AddViewController: UIViewController, UIImagePickerControllerDelegate, UINa
     @IBOutlet weak var imagePreview: UIImageView!
     
     var doneButton: UIBarButtonItem?
+    var imageAsset: PHAsset?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,13 +42,49 @@ class AddViewController: UIViewController, UIImagePickerControllerDelegate, UINa
     }
     
     func donePressed() {
-        let testData = ["email": GIDSignIn.sharedInstance().currentUser.profile.email, "data": "test"]
-        let databaseReference = FIRDatabase.database().reference()
-        let test = databaseReference.child("test").childByAutoId()
-        test.setValue(testData)
-        
-        
-        self.presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
+        if let asset = imageAsset {
+            let currentUser = FIRAuth.auth()?.currentUser
+            
+            asset.requestContentEditingInputWithOptions(nil, completionHandler: { (contentEditingInput, info) in
+                guard let imageURL = contentEditingInput?.fullSizeImageURL else {
+                    return
+                }
+                guard let userID = currentUser?.uid else {
+                    return
+                }
+                let remoteFilePath = String(format: "%@/%@", userID, NSUUID().UUIDString)
+                
+                let storageReference = FIRStorage.storage().reference()
+                let metadata = FIRStorageMetadata()
+                metadata.contentType = "image/jpeg"
+                
+                let progressViewController = ProgressViewController()
+                self.view.fillWithView(progressViewController.view)
+                let uploadTask = storageReference.child(remoteFilePath).putFile(imageURL, metadata: metadata, completion: { (storageMetadata, error) in
+                    if let error = error {
+                        print(error.localizedDescription)
+                    } else {
+                        let currentLocation = self.previewMapView.camera.target
+                        let testData = ["latitude": currentLocation.latitude,
+                                        "longitude": currentLocation.longitude,
+                                        "imagePath": storageMetadata?.downloadURL()?.absoluteString as! AnyObject,
+                                        "title": "",
+                                        "description": ""]
+                        let databaseReference = FIRDatabase.database().reference()
+                        let test = databaseReference.child("pics").child((currentUser?.uid)!).childByAutoId()
+                        test.setValue(testData)
+                    }
+                    
+                    self.presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
+                })
+                uploadTask.observeStatus(.Progress, handler: { (snapshot) in
+                    guard let progress = snapshot.progress else {
+                        return
+                    }
+                    progressViewController.updateProgress(progress)
+                })
+            })
+        }
     }
     
     @IBAction func pickImage(sender: AnyObject) {
@@ -56,6 +97,12 @@ class AddViewController: UIViewController, UIImagePickerControllerDelegate, UINa
         imagePreview.image = info[UIImagePickerControllerOriginalImage] as? UIImage
         self.dismissViewControllerAnimated(true, completion: nil)
         self.doneButton?.enabled = true
+        
+        let asset = PHAsset.fetchAssetsWithALAssetURLs([info[UIImagePickerControllerReferenceURL] as! NSURL], options: nil).lastObject as! PHAsset
+        imageAsset = asset
+        if let location = asset.location {
+            previewMapView.moveCamera(GMSCameraUpdate.setTarget(location.coordinate, zoom: 8.0))
+        }
     }
     
     func imagePickerControllerDidCancel(picker: UIImagePickerController) {

@@ -11,6 +11,7 @@ import CoreLocation
 
 import Firebase
 import FirebaseAuth
+import FirebaseDatabase
 import GoogleMaps
 import GoogleSignIn
 
@@ -36,6 +37,8 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GIDSignInD
         
         locationManager = CLLocationManager()
         locationManager?.delegate = self
+        
+        addButton.enabled = false
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -64,6 +67,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GIDSignInD
             let authentication = user.authentication
             let credential = FIRGoogleAuthProvider.credentialWithIDToken(authentication.idToken, accessToken: authentication.accessToken)
             FIRAuth.auth()?.signInWithCredential(credential) { (user, error) in
+                self.addButton.enabled = true
             }
         }
     }
@@ -82,15 +86,8 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GIDSignInD
         self.presentViewController(addNavigation, animated: true, completion: nil)
     }
     
-    func locationManager(manager: CLLocationManager, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
-        if status == .AuthorizedAlways || status == .AuthorizedWhenInUse {
-            manager.startUpdatingLocation()
-        }
-    }
-    
-    func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-//        let newLocation = locations.last
-//        self.mapView.camera.
+    private func updatePins() {
+        let databaseReference = FIRDatabase.database().reference()
     }
 }
 
