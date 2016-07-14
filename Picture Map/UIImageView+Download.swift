@@ -9,7 +9,8 @@
 import UIKit
 
 extension UIImageView {
-    func downloadImageFrom(link: String) {
+    
+    func downloadImageFrom(link: String, completion: ((Void) -> Void) = {}) {
         guard let url = NSURL(string: link) else { return }
         NSURLSession.sharedSession().dataTaskWithURL(url) { (data, response, error) in
             guard
@@ -18,9 +19,10 @@ extension UIImageView {
                 let data = data where error == nil,
                 let image = UIImage(data: data)
                 else { return }
-            dispatch_async(dispatch_get_main_queue(), { 
+            dispatch_async(dispatch_get_main_queue(), {
                 self.image = image
+                completion()
             })
-        }.resume()
+            }.resume()
     }
 }

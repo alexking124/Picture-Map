@@ -20,6 +20,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         GMSServices.provideAPIKey("AIzaSyBWaH5Sgnm_LMJswc-SRUEg9qXP2zPw1GQ")
         FIRApp.configure()
+        FIRDatabase.database().persistenceEnabled = true
         
         self.window = UIWindow.init(frame: UIScreen.mainScreen().bounds)
         self.window!.makeKeyAndVisible()

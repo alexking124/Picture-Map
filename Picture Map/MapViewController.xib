@@ -10,7 +10,7 @@
             <connections>
                 <outlet property="addButton" destination="zPd-Ax-kbk" id="dEJ-z6-hiH"/>
                 <outlet property="mapView" destination="Vrs-wW-hk3" id="pr5-r1-uwb"/>
-                <outlet property="profileButton" destination="8hb-wp-tBw" id="KYo-3o-wm8"/>
+                <outlet property="profileImageView" destination="Umi-b6-Yes" id="EDi-78-8YG"/>
                 <outlet property="view" destination="iN0-l3-epB" id="idh-Fn-iIQ"/>
             </connections>
         </placeholder>
@@ -30,26 +30,22 @@
                         <action selector="addButtonTapped:" destination="-1" eventType="touchUpInside" id="MMR-8b-rzN"/>
                     </connections>
                 </button>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8hb-wp-tBw">
+                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="account_circle" translatesAutoresizingMaskIntoConstraints="NO" id="Umi-b6-Yes">
                     <rect key="frame" x="8" y="28" width="40" height="40"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="40" id="4Tf-rP-eRM"/>
-                        <constraint firstAttribute="width" secondItem="8hb-wp-tBw" secondAttribute="height" multiplier="1:1" id="vG6-9V-pm5"/>
+                        <constraint firstAttribute="width" secondItem="Umi-b6-Yes" secondAttribute="height" multiplier="1:1" id="WjS-XD-cS3"/>
+                        <constraint firstAttribute="height" constant="40" id="aKW-Z4-euj"/>
                     </constraints>
-                    <state key="normal" backgroundImage="account_circle"/>
-                    <connections>
-                        <action selector="profileButtonTapped:" destination="-1" eventType="touchUpInside" id="Ygj-8W-0o4"/>
-                    </connections>
-                </button>
+                </imageView>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstItem="8hb-wp-tBw" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="8" id="9k9-PA-LJ4"/>
+                <constraint firstItem="Umi-b6-Yes" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="8" id="Bjb-Qc-zub"/>
                 <constraint firstAttribute="trailing" secondItem="Vrs-wW-hk3" secondAttribute="trailing" id="YP4-UL-z9N"/>
                 <constraint firstItem="Vrs-wW-hk3" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="ab0-mc-aWy"/>
-                <constraint firstItem="8hb-wp-tBw" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="28" id="cOd-by-aZJ"/>
                 <constraint firstItem="zPd-Ax-kbk" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="32" id="gwp-s0-Qzt"/>
                 <constraint firstAttribute="bottom" secondItem="Vrs-wW-hk3" secondAttribute="bottom" id="llN-pW-0hy"/>
+                <constraint firstItem="Umi-b6-Yes" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="28" id="reU-Wf-8Xz"/>
                 <constraint firstItem="Vrs-wW-hk3" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="vqW-Ai-r7Y"/>
                 <constraint firstAttribute="trailing" secondItem="zPd-Ax-kbk" secondAttribute="trailing" constant="12" id="w3t-Ft-Qlb"/>
             </constraints>

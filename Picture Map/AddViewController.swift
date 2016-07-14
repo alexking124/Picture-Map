@@ -17,9 +17,13 @@ import GoogleSignIn
 
 class AddViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
+    @IBOutlet weak var pickImageButton: UIButton!
     @IBOutlet weak var previewMapView: GMSMapView!
     @IBOutlet weak var markerImageView: UIImageView!
     @IBOutlet weak var imagePreview: UIImageView!
+    @IBOutlet weak var overlayView: UIView!
+    @IBOutlet weak var titleLabel: UITextField!
+    @IBOutlet weak var descriptionTextView: UITextView!
     
     var doneButton: UIBarButtonItem?
     var imageAsset: PHAsset?
@@ -28,13 +32,14 @@ class AddViewController: UIViewController, UIImagePickerControllerDelegate, UINa
         super.viewDidLoad()
         
         let camera = GMSCameraPosition.cameraWithLatitude(37.0902, longitude: -95.7129, zoom: 3)
-        previewMapView.camera = camera
-        previewMapView.bringSubviewToFront(markerImageView)
+        self.previewMapView.camera = camera
+        self.previewMapView.bringSubviewToFront(self.markerImageView)
+        self.previewMapView.bringSubviewToFront(self.overlayView)
         
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Back", style: UIBarButtonItemStyle.Plain, target: self, action: #selector(backPressed))
-        doneButton = UIBarButtonItem(title: "Done", style: .Plain, target: self, action: #selector(donePressed))
-        doneButton?.enabled = false
-        self.navigationItem.rightBarButtonItem = doneButton
+        self.doneButton = UIBarButtonItem(title: "Done", style: .Plain, target: self, action: #selector(donePressed))
+        self.doneButton?.enabled = false
+        self.navigationItem.rightBarButtonItem = self.doneButton
     }
     
     func backPressed() {
@@ -42,7 +47,7 @@ class AddViewController: UIViewController, UIImagePickerControllerDelegate, UINa
     }
     
     func donePressed() {
-        if let asset = imageAsset {
+        if let asset = self.imageAsset {
             let currentUser = FIRAuth.auth()?.currentUser
             
             asset.requestContentEditingInputWithOptions(nil, completionHandler: { (contentEditingInput, info) in
@@ -65,14 +70,14 @@ class AddViewController: UIViewController, UIImagePickerControllerDelegate, UINa
                         print(error.localizedDescription)
                     } else {
                         let currentLocation = self.previewMapView.camera.target
-                        let testData = ["latitude": currentLocation.latitude,
+                        let pinMetadata = ["latitude": currentLocation.latitude,
                                         "longitude": currentLocation.longitude,
                                         "imagePath": storageMetadata?.downloadURL()?.absoluteString as! AnyObject,
-                                        "title": "",
-                                        "description": ""]
+                                        "title": self.titleLabel.text as! AnyObject,
+                                        "description": self.descriptionTextView.text]
                         let databaseReference = FIRDatabase.database().reference()
-                        let test = databaseReference.child("pics").child((currentUser?.uid)!).childByAutoId()
-                        test.setValue(testData)
+                        let test = databaseReference.child("pins").child(userID).childByAutoId()
+                        test.setValue(pinMetadata)
                     }
                     
                     self.presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
@@ -90,18 +95,20 @@ class AddViewController: UIViewController, UIImagePickerControllerDelegate, UINa
     @IBAction func pickImage(sender: AnyObject) {
         let imagePicker = UIImagePickerController()
         imagePicker.delegate = self
-        self .presentViewController(imagePicker, animated: true, completion: nil)
+        self.presentViewController(imagePicker, animated: true, completion: nil)
     }
     
     func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
         imagePreview.image = info[UIImagePickerControllerOriginalImage] as? UIImage
         self.dismissViewControllerAnimated(true, completion: nil)
         self.doneButton?.enabled = true
+        self.pickImageButton.hidden = true
+        self.overlayView.hidden = true
         
         let asset = PHAsset.fetchAssetsWithALAssetURLs([info[UIImagePickerControllerReferenceURL] as! NSURL], options: nil).lastObject as! PHAsset
-        imageAsset = asset
+        self.imageAsset = asset
         if let location = asset.location {
-            previewMapView.moveCamera(GMSCameraUpdate.setTarget(location.coordinate, zoom: 8.0))
+            self.previewMapView.moveCamera(GMSCameraUpdate.setTarget(location.coordinate, zoom: 8.0))
         }
     }
     
