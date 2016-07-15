@@ -94,20 +94,11 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GIDSignInD
         
         let databaseReference = FIRDatabase.database().reference()
         let userReference = databaseReference.child("pins").child(currentUser.uid)
-        userReference.observeSingleEventOfType(.Value, withBlock: { pinsSnapshot in
-            if pinsSnapshot.value is NSNull {
-                print("No pins found")
-                return
-            }
-            for pin in Pin.parseFromSnapshot(pinsSnapshot) {
-                let marker = GMSMarker(position: CLLocationCoordinate2D(latitude: pin.latitude, longitude: pin.longitude))
-                marker.map = self.mapView
-                marker.userData = pin
-            }
-        })
-        
         userReference.observeEventType(.ChildAdded, withBlock: { (snapshot) in
-            print(snapshot.key)
+            let pin = Pin(snapshot: snapshot)
+            let marker = GMSMarker(position: CLLocationCoordinate2D(latitude: pin.latitude, longitude: pin.longitude))
+            marker.map = self.mapView
+            marker.userData = pin
         })
     }
     

@@ -16,6 +16,7 @@ class Pin {
     var imagePath: String = ""
     var title: String = ""
     var description: String = ""
+    var identifier: String = ""
     
     init() {}
     
@@ -25,6 +26,7 @@ class Pin {
         self.imagePath = snapshot.value!["imagePath"] as! String
         self.title = snapshot.value!["title"] as! String
         self.description = snapshot.value!["description"] as! String
+        self.identifier = snapshot.key
     }
     
     class func parseFromSnapshot(snapshot: FIRDataSnapshot) -> [Pin] {

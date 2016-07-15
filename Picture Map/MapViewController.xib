@@ -23,9 +23,14 @@
                     <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                 </view>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="contactAdd" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zPd-Ax-kbk">
-                    <rect key="frame" x="566" y="32" width="22" height="22"/>
+                <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zPd-Ax-kbk">
+                    <rect key="frame" x="548" y="28" width="40" height="40"/>
+                    <constraints>
+                        <constraint firstAttribute="width" secondItem="zPd-Ax-kbk" secondAttribute="height" multiplier="1:1" id="2tf-YK-Lr8"/>
+                        <constraint firstAttribute="height" constant="40" id="v0g-6f-B4f"/>
+                    </constraints>
                     <color key="tintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                    <state key="normal" image="add_location"/>
                     <connections>
                         <action selector="addButtonTapped:" destination="-1" eventType="touchUpInside" id="MMR-8b-rzN"/>
                     </connections>
@@ -43,7 +48,7 @@
                 <constraint firstItem="Umi-b6-Yes" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="8" id="Bjb-Qc-zub"/>
                 <constraint firstAttribute="trailing" secondItem="Vrs-wW-hk3" secondAttribute="trailing" id="YP4-UL-z9N"/>
                 <constraint firstItem="Vrs-wW-hk3" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="ab0-mc-aWy"/>
-                <constraint firstItem="zPd-Ax-kbk" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="32" id="gwp-s0-Qzt"/>
+                <constraint firstItem="zPd-Ax-kbk" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="28" id="gwp-s0-Qzt"/>
                 <constraint firstAttribute="bottom" secondItem="Vrs-wW-hk3" secondAttribute="bottom" id="llN-pW-0hy"/>
                 <constraint firstItem="Umi-b6-Yes" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="28" id="reU-Wf-8Xz"/>
                 <constraint firstItem="Vrs-wW-hk3" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="vqW-Ai-r7Y"/>
@@ -53,5 +58,6 @@
     </objects>
     <resources>
         <image name="account_circle" width="48" height="48"/>
+        <image name="add_location" width="48" height="48"/>
     </resources>
 </document>

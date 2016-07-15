@@ -57,11 +57,11 @@ class PhotoViewController: UIViewController, UIScrollViewDelegate {
         if screenAspectRatio < imageAspectRatio {
             // image is wider than screen, so fit the width
             self.minimumZoomScale = self.view.frame.size.width / image.size.width
-            self.maximumZoomScale = self.minimumZoomScale * 3
+            self.maximumZoomScale = self.minimumZoomScale * 2
         } else {
             // fit the height
             self.minimumZoomScale = self.view.frame.size.height / image.size.height
-            self.maximumZoomScale = self.minimumZoomScale * 3
+            self.maximumZoomScale = self.minimumZoomScale * 2
         }
         
         self.scrollView.maximumZoomScale = self.maximumZoomScale
@@ -74,10 +74,12 @@ class PhotoViewController: UIViewController, UIScrollViewDelegate {
     }
     
     @IBAction func doubleTappedImage(sender: AnyObject) {
-        if self.scrollView.zoomScale != self.minimumZoomScale {
-            self.scrollView.zoomScale = self.minimumZoomScale
-        } else {
-            self.scrollView.zoomScale = self.maximumZoomScale
+        UIView.animateWithDuration(0.3) {
+            if self.scrollView.zoomScale != self.minimumZoomScale {
+                self.scrollView.zoomScale = self.minimumZoomScale
+            } else {
+                self.scrollView.zoomScale = self.maximumZoomScale
+            }
         }
     }
     

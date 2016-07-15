@@ -26,7 +26,6 @@ class AddViewController: UIViewController, UIImagePickerControllerDelegate, UINa
     @IBOutlet weak var descriptionTextView: UITextView!
     
     var doneButton: UIBarButtonItem?
-    var imageAsset: PHAsset?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -47,49 +46,42 @@ class AddViewController: UIViewController, UIImagePickerControllerDelegate, UINa
     }
     
     func donePressed() {
-        if let asset = self.imageAsset {
-            let currentUser = FIRAuth.auth()?.currentUser
-            
-            asset.requestContentEditingInputWithOptions(nil, completionHandler: { (contentEditingInput, info) in
-                guard let imageURL = contentEditingInput?.fullSizeImageURL else {
-                    return
-                }
-                guard let userID = currentUser?.uid else {
-                    return
-                }
-                let remoteFilePath = String(format: "%@/%@", userID, NSUUID().UUIDString)
-                
-                let storageReference = FIRStorage.storage().reference()
-                let metadata = FIRStorageMetadata()
-                metadata.contentType = "image/jpeg"
-                
-                let progressViewController = ProgressViewController()
-                self.view.fillWithView(progressViewController.view)
-                let uploadTask = storageReference.child(remoteFilePath).putFile(imageURL, metadata: metadata, completion: { (storageMetadata, error) in
-                    if let error = error {
-                        print(error.localizedDescription)
-                    } else {
-                        let currentLocation = self.previewMapView.camera.target
-                        let pinMetadata = ["latitude": currentLocation.latitude,
-                                        "longitude": currentLocation.longitude,
-                                        "imagePath": storageMetadata?.downloadURL()?.absoluteString as! AnyObject,
-                                        "title": self.titleLabel.text as! AnyObject,
-                                        "description": self.descriptionTextView.text]
-                        let databaseReference = FIRDatabase.database().reference()
-                        let test = databaseReference.child("pins").child(userID).childByAutoId()
-                        test.setValue(pinMetadata)
-                    }
-                    
-                    self.presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
-                })
-                uploadTask.observeStatus(.Progress, handler: { (snapshot) in
-                    guard let progress = snapshot.progress else {
-                        return
-                    }
-                    progressViewController.updateProgress(progress)
-                })
-            })
+        let currentUser = FIRAuth.auth()?.currentUser
+        
+        guard let userID = currentUser?.uid else {
+            return
         }
+        let remoteFilePath = String(format: "%@/%@", userID, NSUUID().UUIDString)
+        
+        let storageReference = FIRStorage.storage().reference()
+        let metadata = FIRStorageMetadata()
+        metadata.contentType = "image/jpeg"
+        
+        let progressViewController = ProgressViewController()
+        self.view.fillWithView(progressViewController.view)
+        let uploadTask = storageReference.child(remoteFilePath).putData(UIImageJPEGRepresentation(self.imagePreview.image!, 0.1)!, metadata: metadata, completion: { (storageMetadata, error) in
+            if let error = error {
+                print(error.localizedDescription)
+            } else {
+                let currentLocation = self.previewMapView.camera.target
+                let pinMetadata = ["latitude": currentLocation.latitude,
+                                "longitude": currentLocation.longitude,
+                                "imagePath": storageMetadata?.downloadURL()?.absoluteString as! AnyObject,
+                                "title": self.titleLabel.text as! AnyObject,
+                                "description": self.descriptionTextView.text]
+                let databaseReference = FIRDatabase.database().reference()
+                let test = databaseReference.child("pins").child(userID).childByAutoId()
+                test.setValue(pinMetadata)
+            }
+            
+            self.presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
+        })
+        uploadTask.observeStatus(.Progress, handler: { (snapshot) in
+            guard let progress = snapshot.progress else {
+                return
+            }
+            progressViewController.updateProgress(progress)
+        })
     }
     
     @IBAction func pickImage(sender: AnyObject) {
@@ -100,13 +92,13 @@ class AddViewController: UIViewController, UIImagePickerControllerDelegate, UINa
     
     func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
         imagePreview.image = info[UIImagePickerControllerOriginalImage] as? UIImage
+        
         self.dismissViewControllerAnimated(true, completion: nil)
         self.doneButton?.enabled = true
         self.pickImageButton.hidden = true
         self.overlayView.hidden = true
         
-        let asset = PHAsset.fetchAssetsWithALAssetURLs([info[UIImagePickerControllerReferenceURL] as! NSURL], options: nil).lastObject as! PHAsset
-        self.imageAsset = asset
+        let asset = PHAsset.fetchAssetsWithALAssetURLs([info[UIImagePickerControllerReferenceURL] as! NSURL], options: nil).firstObject as! PHAsset
         if let location = asset.location {
             self.previewMapView.moveCamera(GMSCameraUpdate.setTarget(location.coordinate, zoom: 8.0))
         }
