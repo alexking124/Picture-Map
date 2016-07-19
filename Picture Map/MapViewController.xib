@@ -35,12 +35,16 @@
                         <action selector="addButtonTapped:" destination="-1" eventType="touchUpInside" id="MMR-8b-rzN"/>
                     </connections>
                 </button>
-                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="account_circle" translatesAutoresizingMaskIntoConstraints="NO" id="Umi-b6-Yes">
+                <imageView contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="account_circle" translatesAutoresizingMaskIntoConstraints="NO" id="Umi-b6-Yes">
                     <rect key="frame" x="8" y="28" width="40" height="40"/>
+                    <gestureRecognizers/>
                     <constraints>
                         <constraint firstAttribute="width" secondItem="Umi-b6-Yes" secondAttribute="height" multiplier="1:1" id="WjS-XD-cS3"/>
                         <constraint firstAttribute="height" constant="40" id="aKW-Z4-euj"/>
                     </constraints>
+                    <connections>
+                        <outletCollection property="gestureRecognizers" destination="qel-JB-OlC" appends="YES" id="sDP-RI-h5D"/>
+                    </connections>
                 </imageView>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
@@ -55,6 +59,11 @@
                 <constraint firstAttribute="trailing" secondItem="zPd-Ax-kbk" secondAttribute="trailing" constant="12" id="w3t-Ft-Qlb"/>
             </constraints>
         </view>
+        <tapGestureRecognizer id="qel-JB-OlC">
+            <connections>
+                <action selector="profileImageTapped:" destination="-1" id="5Ip-cD-b3y"/>
+            </connections>
+        </tapGestureRecognizer>
     </objects>
     <resources>
         <image name="account_circle" width="48" height="48"/>

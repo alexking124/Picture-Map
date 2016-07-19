@@ -10,12 +10,16 @@ import UIKit
 
 class PhotoViewController: UIViewController, UIScrollViewDelegate {
     
+    @IBOutlet weak var backButton: UIButton!
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var imageView: UIImageView!
+    @IBOutlet weak var secondaryImageView: UIImageView!
     @IBOutlet weak var bottomContentView: UIView!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var descriptionLabel: UILabel!
     @IBOutlet weak var loadingIndicator: UIActivityIndicatorView!
+    @IBOutlet var doubleTapRecognizer: UITapGestureRecognizer!
+    @IBOutlet var singleTapRecognizer: UITapGestureRecognizer!
     
     var pin: Pin
     var minimumZoomScale: CGFloat = 0.2
@@ -36,20 +40,28 @@ class PhotoViewController: UIViewController, UIScrollViewDelegate {
         self.scrollView.delegate = self
         
         ImageLoader.sharedLoader.imageForPin(self.pin, completion: { (image) in
-            self.imageView.image = image
-            self.updateScrollViewForNewImage()
+//            self.imageView.image = image
+            self.secondaryImageView.image = image
+//            self.updateScrollViewForNewImage()
             self.loadingIndicator.stopAnimating()
         })
         
-        self.titleLabel.text = self.pin.title
-        self.descriptionLabel.text = self.pin.description
+        if self.pin.title.isEmpty && self.pin.description.isEmpty {
+            self.bottomContentView.hidden = true
+        } else {
+            self.titleLabel.text = self.pin.title
+            self.descriptionLabel.text = self.pin.description
+        }
+        
+        self.doubleTapRecognizer.enabled = false
+        self.singleTapRecognizer.requireGestureRecognizerToFail(self.doubleTapRecognizer)
     }
     
-    override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(animated)
-        
-        self.updateScrollViewForNewImage()
-    }
+//    override func viewDidAppear(animated: Bool) {
+//        super.viewDidAppear(animated)
+//        
+//        self.updateScrollViewForNewImage()
+//    }
     
     func updateScrollViewForNewImage() {
         guard let image = self.imageView.image else {
@@ -87,6 +99,13 @@ class PhotoViewController: UIViewController, UIScrollViewDelegate {
             } else {
                 self.scrollView.zoomScale = self.maximumZoomScale
             }
+        }
+    }
+    
+    @IBAction func singleTappedImage(sender: AnyObject) {
+        UIView.animateWithDuration(0.3) {
+            self.bottomContentView.alpha = 1.0 - self.bottomContentView.alpha
+            self.backButton.alpha = 1.0 - self.backButton.alpha
         }
     }
     

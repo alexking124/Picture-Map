@@ -37,13 +37,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GIDSignInD
         locationManager = CLLocationManager()
         locationManager?.delegate = self
         
-        if (FIRAuth.auth()?.currentUser == nil) {
-            addButton.enabled = false
-            GIDSignIn.sharedInstance().clientID = FIRApp.defaultApp()?.options.clientID
-            GIDSignIn.sharedInstance().uiDelegate = self
-            GIDSignIn.sharedInstance().delegate = self
-            GIDSignIn.sharedInstance().signIn()
-        } else {
+        if (FIRAuth.auth()?.currentUser != nil) {
             self.profileImageView.downloadImageFrom((FIRAuth.auth()?.currentUser?.photoURL)!.absoluteString)
             self.updatePins()
         }
@@ -61,6 +55,18 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GIDSignInD
         let pin = marker.userData as! Pin
         self.presentViewController(PhotoViewController(pin: pin), animated: true, completion: nil)
         return true
+    }
+    
+    @IBAction func profileImageTapped(sender: AnyObject) {
+        if (FIRAuth.auth()?.currentUser == nil) {
+            addButton.enabled = false
+            GIDSignIn.sharedInstance().clientID = FIRApp.defaultApp()?.options.clientID
+            GIDSignIn.sharedInstance().uiDelegate = self
+            GIDSignIn.sharedInstance().delegate = self
+            GIDSignIn.sharedInstance().signIn()
+        } else {
+            print("Open Settings")
+        }
     }
     
     func signIn(signIn: GIDSignIn!, didSignInForUser googleUser: GIDGoogleUser!, withError error: NSError?) {
