@@ -35,13 +35,20 @@ class PhotoViewController: UIViewController, UIScrollViewDelegate {
         
         self.scrollView.delegate = self
         
-        self.imageView.downloadImageFrom(self.pin.imagePath) { () in
+        ImageLoader.sharedLoader.imageForPin(self.pin, completion: { (image) in
+            self.imageView.image = image
             self.updateScrollViewForNewImage()
             self.loadingIndicator.stopAnimating()
-        }
+        })
         
         self.titleLabel.text = self.pin.title
         self.descriptionLabel.text = self.pin.description
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        self.updateScrollViewForNewImage()
     }
     
     func updateScrollViewForNewImage() {

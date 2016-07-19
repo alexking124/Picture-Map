@@ -97,8 +97,18 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GIDSignInD
         userReference.observeEventType(.ChildAdded, withBlock: { (snapshot) in
             let pin = Pin(snapshot: snapshot)
             let marker = GMSMarker(position: CLLocationCoordinate2D(latitude: pin.latitude, longitude: pin.longitude))
+            marker.groundAnchor = CGPointMake(0.5, 0.5)
             marker.map = self.mapView
             marker.userData = pin
+            
+            let markerView = UIImageView(image: UIImage(named: "empty_image"))
+            ImageLoader.sharedLoader.imageForPin(pin, completion: { (image) in
+                markerView.image = image
+            })
+            markerView.contentMode = .ScaleAspectFill
+            markerView.layer.cornerRadius = 5
+            markerView.clipsToBounds = true
+            marker.iconView = markerView
         })
     }
     

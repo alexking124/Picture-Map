@@ -58,7 +58,7 @@ class AddViewController: UIViewController, UIImagePickerControllerDelegate, UINa
         metadata.contentType = "image/jpeg"
         
         let progressViewController = ProgressViewController()
-        self.view.fillWithView(progressViewController.view)
+        self.navigationController!.view.fillWithView(progressViewController.view)
         let uploadTask = storageReference.child(remoteFilePath).putData(UIImageJPEGRepresentation(self.imagePreview.image!, 0.1)!, metadata: metadata, completion: { (storageMetadata, error) in
             if let error = error {
                 print(error.localizedDescription)

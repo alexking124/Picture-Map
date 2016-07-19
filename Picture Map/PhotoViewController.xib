@@ -76,9 +76,9 @@
                         <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="9j1-sL-qLk" secondAttribute="trailing" constant="20" symbolic="YES" id="yYb-Lg-2Hi"/>
                     </constraints>
                 </view>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Yso-Mg-IpI">
-                    <rect key="frame" x="8" y="28" width="34" height="30"/>
-                    <state key="normal" title="Back">
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Yso-Mg-IpI">
+                    <rect key="frame" x="8" y="28" width="48" height="48"/>
+                    <state key="normal" image="chevron_left_white">
                         <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                     <connections>
@@ -109,4 +109,7 @@
         </tapGestureRecognizer>
         <tapGestureRecognizer id="dF6-Mb-ini" userLabel="Single Tap Recognizer"/>
     </objects>
+    <resources>
+        <image name="chevron_left_white" width="48" height="48"/>
+    </resources>
 </document>
