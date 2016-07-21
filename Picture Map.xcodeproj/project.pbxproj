@@ -22,6 +22,7 @@
 		6B72EA8C1D3829FE00319359 /* PhotoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6B72EA8B1D3829FE00319359 /* PhotoViewController.xib */; };
 		6B72EA8E1D382A1000319359 /* PhotoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B72EA8D1D382A1000319359 /* PhotoViewController.swift */; };
 		6B72EA901D38391000319359 /* Pin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B72EA8F1D38391000319359 /* Pin.swift */; };
+		6B8CD47D1D405AF70088CBA7 /* UserProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B8CD47C1D405AF70088CBA7 /* UserProfile.swift */; };
 		6BB97BF11D3D71C500D3F8A0 /* ImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BB97BF01D3D71C500D3F8A0 /* ImageLoader.swift */; };
 		6BB97BF31D3FE90600D3F8A0 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6BB97BF21D3FE90600D3F8A0 /* StoreKit.framework */; };
 		6BB97BF51D3FEECE00D3F8A0 /* IAPHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BB97BF41D3FEECE00D3F8A0 /* IAPHelper.swift */; };
@@ -49,6 +50,7 @@
 		6B72EA8B1D3829FE00319359 /* PhotoViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PhotoViewController.xib; sourceTree = "<group>"; };
 		6B72EA8D1D382A1000319359 /* PhotoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoViewController.swift; sourceTree = "<group>"; };
 		6B72EA8F1D38391000319359 /* Pin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Pin.swift; sourceTree = "<group>"; };
+		6B8CD47C1D405AF70088CBA7 /* UserProfile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserProfile.swift; sourceTree = "<group>"; };
 		6BB97BF01D3D71C500D3F8A0 /* ImageLoader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageLoader.swift; sourceTree = "<group>"; };
 		6BB97BF21D3FE90600D3F8A0 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		6BB97BF41D3FEECE00D3F8A0 /* IAPHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IAPHelper.swift; sourceTree = "<group>"; };
@@ -109,6 +111,7 @@
 				6B72EA871D35CF2F00319359 /* ProgressViewController.xib */,
 				6BB97BF61D3FF4A600D3F8A0 /* SettingsViewController.swift */,
 				6BB97BF81D3FF4BA00D3F8A0 /* SettingsViewController.xib */,
+				6B8CD47C1D405AF70088CBA7 /* UserProfile.swift */,
 			);
 			path = "Picture Map";
 			sourceTree = "<group>";
@@ -292,6 +295,7 @@
 				6B72EA861D35CF0F00319359 /* ProgressViewController.swift in Sources */,
 				6BB97BF11D3D71C500D3F8A0 /* ImageLoader.swift in Sources */,
 				6B72EA8E1D382A1000319359 /* PhotoViewController.swift in Sources */,
+				6B8CD47D1D405AF70088CBA7 /* UserProfile.swift in Sources */,
 				39CDA40A1D341A090081175A /* AddViewController.swift in Sources */,
 				6BB97BF51D3FEECE00D3F8A0 /* IAPHelper.swift in Sources */,
 				39CDA4081D340E180081175A /* UIImageView+Download.swift in Sources */,

@@ -96,17 +96,10 @@ class SettingsViewController: UIViewController {
     }
     
     @IBAction func authenticationButtonTapped(sender: AnyObject) {
-        if FIRAuth.auth()?.currentUser != nil {
-            do {
-                try FIRAuth.auth()?.signOut()
-            } catch {
-                print("Error logging out: \(error)")
-            }
+        if UserProfile.currentUser() != nil {
+            UserProfile.logOut()
         } else {
-            GIDSignIn.sharedInstance().clientID = FIRApp.defaultApp()?.options.clientID
-            GIDSignIn.sharedInstance().uiDelegate = self
-            GIDSignIn.sharedInstance().delegate = self
-            GIDSignIn.sharedInstance().signIn()
+            UserProfile.logInWithSignInDelegate(self, uiDelegate: self)
         }
     }
     
