@@ -15,7 +15,7 @@ import FirebaseStorage
 import GoogleMaps
 import GoogleSignIn
 
-class AddViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class AddViewController: UIViewController, UINavigationControllerDelegate {
     
     @IBOutlet weak var pickImageButton: UIButton!
     @IBOutlet weak var previewMapView: GMSMapView!
@@ -24,6 +24,9 @@ class AddViewController: UIViewController, UIImagePickerControllerDelegate, UINa
     @IBOutlet weak var overlayView: UIView!
     @IBOutlet weak var titleLabel: UITextField!
     @IBOutlet weak var descriptionTextView: UITextView!
+    @IBOutlet weak var scrollView: UIScrollView!
+    @IBOutlet weak var contentView: UIView!
+    @IBOutlet weak var descriptionPlaceholder: UILabel!
     
     var doneButton: UIBarButtonItem?
     
@@ -39,6 +42,52 @@ class AddViewController: UIViewController, UIImagePickerControllerDelegate, UINa
         self.doneButton = UIBarButtonItem(title: "Done", style: .Plain, target: self, action: #selector(donePressed))
         self.doneButton?.enabled = false
         self.navigationItem.rightBarButtonItem = self.doneButton
+        
+        self.descriptionTextView.delegate = self
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        registerKeyboardNotifications()
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        unregisterKeyboardNotifications()
+    }
+    
+    func registerKeyboardNotifications() {
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(keyboardDidShow(_:)), name: UIKeyboardDidShowNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object: nil)
+    }
+    
+    func unregisterKeyboardNotifications() {
+        NSNotificationCenter.defaultCenter().removeObserver(self)
+    }
+    
+    func keyboardDidShow(notification: NSNotification) {
+        let userInfo: NSDictionary = notification.userInfo!
+        let keyboardSize = userInfo.objectForKey(UIKeyboardFrameBeginUserInfoKey)!.CGRectValue.size
+        let contentInsets = UIEdgeInsetsMake(0, 0, keyboardSize.height, 0)
+        self.scrollView.contentInset = contentInsets
+        self.scrollView.scrollIndicatorInsets = contentInsets
+        
+        var viewRect = view.frame
+        viewRect.size.height -= keyboardSize.height
+        if CGRectContainsPoint(viewRect, self.descriptionTextView.frame.origin) {
+            self.scrollView.scrollRectToVisible(viewRect, animated: true)
+        }
+    }
+    
+    func keyboardWillHide(notification: NSNotification) {
+        self.scrollView.contentInset = UIEdgeInsetsZero
+        self.scrollView.scrollIndicatorInsets = UIEdgeInsetsZero
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        self.scrollView.contentSize = self.contentView.frame.size
     }
     
     func backPressed() {
@@ -90,6 +139,10 @@ class AddViewController: UIViewController, UIImagePickerControllerDelegate, UINa
         self.presentViewController(imagePicker, animated: true, completion: nil)
     }
     
+}
+
+extension AddViewController: UIImagePickerControllerDelegate {
+    
     func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
         imagePreview.image = info[UIImagePickerControllerOriginalImage] as? UIImage
         
@@ -107,4 +160,17 @@ class AddViewController: UIViewController, UIImagePickerControllerDelegate, UINa
     func imagePickerControllerDidCancel(picker: UIImagePickerController) {
         self.dismissViewControllerAnimated(true, completion: nil)
     }
+    
+}
+
+extension AddViewController: UITextViewDelegate {
+    
+    func textViewDidChange(textView: UITextView) {
+        if textView.text == "" {
+            self.descriptionPlaceholder.hidden = false
+        } else {
+            self.descriptionPlaceholder.hidden = true
+        }
+    }
+    
 }

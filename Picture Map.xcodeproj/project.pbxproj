@@ -23,6 +23,10 @@
 		6B72EA8E1D382A1000319359 /* PhotoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B72EA8D1D382A1000319359 /* PhotoViewController.swift */; };
 		6B72EA901D38391000319359 /* Pin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B72EA8F1D38391000319359 /* Pin.swift */; };
 		6BB97BF11D3D71C500D3F8A0 /* ImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BB97BF01D3D71C500D3F8A0 /* ImageLoader.swift */; };
+		6BB97BF31D3FE90600D3F8A0 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6BB97BF21D3FE90600D3F8A0 /* StoreKit.framework */; };
+		6BB97BF51D3FEECE00D3F8A0 /* IAPHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BB97BF41D3FEECE00D3F8A0 /* IAPHelper.swift */; };
+		6BB97BF71D3FF4A600D3F8A0 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BB97BF61D3FF4A600D3F8A0 /* SettingsViewController.swift */; };
+		6BB97BF91D3FF4BA00D3F8A0 /* SettingsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6BB97BF81D3FF4BA00D3F8A0 /* SettingsViewController.xib */; };
 		B6443B8B312BF4AEDFF8D8D9 /* Pods_Picture_Map.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 302B872E9BFE17D6CC92801F /* Pods_Picture_Map.framework */; };
 /* End PBXBuildFile section */
 
@@ -46,6 +50,10 @@
 		6B72EA8D1D382A1000319359 /* PhotoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoViewController.swift; sourceTree = "<group>"; };
 		6B72EA8F1D38391000319359 /* Pin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Pin.swift; sourceTree = "<group>"; };
 		6BB97BF01D3D71C500D3F8A0 /* ImageLoader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageLoader.swift; sourceTree = "<group>"; };
+		6BB97BF21D3FE90600D3F8A0 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
+		6BB97BF41D3FEECE00D3F8A0 /* IAPHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IAPHelper.swift; sourceTree = "<group>"; };
+		6BB97BF61D3FF4A600D3F8A0 /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		6BB97BF81D3FF4BA00D3F8A0 /* SettingsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SettingsViewController.xib; sourceTree = "<group>"; };
 		6EC63693688BC1DA0F804006 /* Pods-Picture Map.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Picture Map.release.xcconfig"; path = "Pods/Target Support Files/Pods-Picture Map/Pods-Picture Map.release.xcconfig"; sourceTree = "<group>"; };
 		F5824E4D9B0AAE20D3A21A5C /* Pods-Picture Map.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Picture Map.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Picture Map/Pods-Picture Map.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -56,6 +64,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B6443B8B312BF4AEDFF8D8D9 /* Pods_Picture_Map.framework in Frameworks */,
+				6BB97BF31D3FE90600D3F8A0 /* StoreKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -83,9 +92,13 @@
 		39378B041D30641D005B927E /* Picture Map */ = {
 			isa = PBXGroup;
 			children = (
+				39378B0C1D30641D005B927E /* Assets.xcassets */,
+				39CDA4061D340DC00081175A /* Extension */,
+				39CDA40D1D341A640081175A /* Supporting Files */,
 				39CDA4091D341A090081175A /* AddViewController.swift */,
 				39CDA40B1D341A550081175A /* AddViewController.xib */,
 				39378B051D30641D005B927E /* AppDelegate.swift */,
+				6BB97BF41D3FEECE00D3F8A0 /* IAPHelper.swift */,
 				6BB97BF01D3D71C500D3F8A0 /* ImageLoader.swift */,
 				39378B071D30641D005B927E /* MapViewController.swift */,
 				39CDA4041D3409AB0081175A /* MapViewController.xib */,
@@ -94,9 +107,8 @@
 				6B72EA8F1D38391000319359 /* Pin.swift */,
 				6B72EA851D35CF0F00319359 /* ProgressViewController.swift */,
 				6B72EA871D35CF2F00319359 /* ProgressViewController.xib */,
-				39378B0C1D30641D005B927E /* Assets.xcassets */,
-				39CDA4061D340DC00081175A /* Extension */,
-				39CDA40D1D341A640081175A /* Supporting Files */,
+				6BB97BF61D3FF4A600D3F8A0 /* SettingsViewController.swift */,
+				6BB97BF81D3FF4BA00D3F8A0 /* SettingsViewController.xib */,
 			);
 			path = "Picture Map";
 			sourceTree = "<group>";
@@ -124,6 +136,7 @@
 		4EECA1132124BB57BEF06556 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				6BB97BF21D3FE90600D3F8A0 /* StoreKit.framework */,
 				302B872E9BFE17D6CC92801F /* Pods_Picture_Map.framework */,
 			);
 			name = Frameworks;
@@ -174,6 +187,11 @@
 					39378B011D30641D005B927E = {
 						CreatedOnToolsVersion = 7.3.1;
 						DevelopmentTeam = T36GJ569RT;
+						SystemCapabilities = {
+							com.apple.InAppPurchase = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -203,6 +221,7 @@
 				6B72EA8C1D3829FE00319359 /* PhotoViewController.xib in Resources */,
 				39378B101D30641D005B927E /* LaunchScreen.storyboard in Resources */,
 				39378B181D3064D9005B927E /* GoogleService-Info.plist in Resources */,
+				6BB97BF91D3FF4BA00D3F8A0 /* SettingsViewController.xib in Resources */,
 				39CDA40C1D341A550081175A /* AddViewController.xib in Resources */,
 				39378B0D1D30641D005B927E /* Assets.xcassets in Resources */,
 				39CDA4051D3409AB0081175A /* MapViewController.xib in Resources */,
@@ -267,12 +286,14 @@
 			files = (
 				6B72EA841D35CC7A00319359 /* UIView+FillWithView.swift in Sources */,
 				39378B081D30641D005B927E /* MapViewController.swift in Sources */,
+				6BB97BF71D3FF4A600D3F8A0 /* SettingsViewController.swift in Sources */,
 				39378B061D30641D005B927E /* AppDelegate.swift in Sources */,
 				6B72EA901D38391000319359 /* Pin.swift in Sources */,
 				6B72EA861D35CF0F00319359 /* ProgressViewController.swift in Sources */,
 				6BB97BF11D3D71C500D3F8A0 /* ImageLoader.swift in Sources */,
 				6B72EA8E1D382A1000319359 /* PhotoViewController.swift in Sources */,
 				39CDA40A1D341A090081175A /* AddViewController.swift in Sources */,
+				6BB97BF51D3FEECE00D3F8A0 /* IAPHelper.swift in Sources */,
 				39CDA4081D340E180081175A /* UIImageView+Download.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

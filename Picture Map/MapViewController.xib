@@ -10,7 +10,6 @@
             <connections>
                 <outlet property="addButton" destination="zPd-Ax-kbk" id="dEJ-z6-hiH"/>
                 <outlet property="mapView" destination="Vrs-wW-hk3" id="pr5-r1-uwb"/>
-                <outlet property="profileImageView" destination="Umi-b6-Yes" id="EDi-78-8YG"/>
                 <outlet property="view" destination="iN0-l3-epB" id="idh-Fn-iIQ"/>
             </connections>
         </placeholder>
@@ -35,38 +34,33 @@
                         <action selector="addButtonTapped:" destination="-1" eventType="touchUpInside" id="MMR-8b-rzN"/>
                     </connections>
                 </button>
-                <imageView contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="account_circle" translatesAutoresizingMaskIntoConstraints="NO" id="Umi-b6-Yes">
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cn3-Me-lpq">
                     <rect key="frame" x="8" y="28" width="40" height="40"/>
-                    <gestureRecognizers/>
                     <constraints>
-                        <constraint firstAttribute="width" secondItem="Umi-b6-Yes" secondAttribute="height" multiplier="1:1" id="WjS-XD-cS3"/>
-                        <constraint firstAttribute="height" constant="40" id="aKW-Z4-euj"/>
+                        <constraint firstAttribute="height" constant="40" id="EQQ-ac-ONu"/>
+                        <constraint firstAttribute="width" secondItem="cn3-Me-lpq" secondAttribute="height" multiplier="1:1" id="j6G-c2-oUA"/>
                     </constraints>
+                    <state key="normal" image="settings"/>
                     <connections>
-                        <outletCollection property="gestureRecognizers" destination="qel-JB-OlC" appends="YES" id="sDP-RI-h5D"/>
+                        <action selector="settingsButtonTapped:" destination="-1" eventType="touchUpInside" id="noh-rS-rXg"/>
                     </connections>
-                </imageView>
+                </button>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstItem="Umi-b6-Yes" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="8" id="Bjb-Qc-zub"/>
+                <constraint firstItem="cn3-Me-lpq" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="28" id="9hS-zG-9RG"/>
+                <constraint firstItem="cn3-Me-lpq" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="8" id="E1h-Cg-7fz"/>
                 <constraint firstAttribute="trailing" secondItem="Vrs-wW-hk3" secondAttribute="trailing" id="YP4-UL-z9N"/>
                 <constraint firstItem="Vrs-wW-hk3" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="ab0-mc-aWy"/>
                 <constraint firstItem="zPd-Ax-kbk" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="28" id="gwp-s0-Qzt"/>
                 <constraint firstAttribute="bottom" secondItem="Vrs-wW-hk3" secondAttribute="bottom" id="llN-pW-0hy"/>
-                <constraint firstItem="Umi-b6-Yes" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="28" id="reU-Wf-8Xz"/>
                 <constraint firstItem="Vrs-wW-hk3" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="vqW-Ai-r7Y"/>
                 <constraint firstAttribute="trailing" secondItem="zPd-Ax-kbk" secondAttribute="trailing" constant="12" id="w3t-Ft-Qlb"/>
             </constraints>
         </view>
-        <tapGestureRecognizer id="qel-JB-OlC">
-            <connections>
-                <action selector="profileImageTapped:" destination="-1" id="5Ip-cD-b3y"/>
-            </connections>
-        </tapGestureRecognizer>
     </objects>
     <resources>
-        <image name="account_circle" width="48" height="48"/>
         <image name="add_location" width="48" height="48"/>
+        <image name="settings" width="48" height="48"/>
     </resources>
 </document>

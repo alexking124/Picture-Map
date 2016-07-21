@@ -15,14 +15,13 @@ import FirebaseDatabase
 import GoogleMaps
 import GoogleSignIn
 
-class MapViewController: UIViewController, CLLocationManagerDelegate, GIDSignInDelegate, GIDSignInUIDelegate, GMSMapViewDelegate {
+class MapViewController: UIViewController {
     
     @IBOutlet var mapView: GMSMapView!
-    @IBOutlet weak var profileImageView: UIImageView!
     @IBOutlet weak var addButton: UIButton!
     
     var locationManager: CLLocationManager?
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
@@ -31,16 +30,18 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GIDSignInD
         self.mapView.myLocationEnabled = true
         self.mapView.delegate = self
         
-        profileImageView.layer.cornerRadius = profileImageView.frame.width/2
-        profileImageView.clipsToBounds = true
-        
         locationManager = CLLocationManager()
         locationManager?.delegate = self
         
-        if (FIRAuth.auth()?.currentUser != nil) {
-            self.profileImageView.downloadImageFrom((FIRAuth.auth()?.currentUser?.photoURL)!.absoluteString)
-            self.updatePins()
-        }
+        FIRAuth.auth()?.addAuthStateDidChangeListener({ (auth, user) in
+            if user != nil {
+                self.updatePins()
+                self.addButton.enabled = true
+            } else {
+                self.mapView.clear()
+                self.addButton.enabled = false
+            }
+        })
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -51,43 +52,11 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GIDSignInD
         }
     }
     
-    func mapView(mapView: GMSMapView, didTapMarker marker: GMSMarker) -> Bool {
-        let pin = marker.userData as! Pin
-        self.presentViewController(PhotoViewController(pin: pin), animated: true, completion: nil)
-        return true
+    @IBAction func settingsButtonTapped(sender: AnyObject) {
+        let settingsNavigation = UINavigationController(rootViewController: SettingsViewController())
+        self.presentViewController(settingsNavigation, animated: true, completion: nil)
     }
     
-    @IBAction func profileImageTapped(sender: AnyObject) {
-        if (FIRAuth.auth()?.currentUser == nil) {
-            addButton.enabled = false
-            GIDSignIn.sharedInstance().clientID = FIRApp.defaultApp()?.options.clientID
-            GIDSignIn.sharedInstance().uiDelegate = self
-            GIDSignIn.sharedInstance().delegate = self
-            GIDSignIn.sharedInstance().signIn()
-        } else {
-            print("Open Settings")
-        }
-    }
-    
-    func signIn(signIn: GIDSignIn!, didSignInForUser googleUser: GIDGoogleUser!, withError error: NSError?) {
-        if let googleUser = googleUser {
-            let authentication = googleUser.authentication
-            let credential = FIRGoogleAuthProvider.credentialWithIDToken(authentication.idToken, accessToken: authentication.accessToken)
-            FIRAuth.auth()?.signInWithCredential(credential) { (user, error) in
-                if error != nil {
-                    return
-                }
-                
-                let updateProperty = user?.profileChangeRequest()
-                updateProperty?.photoURL = googleUser.profile.imageURLWithDimension(UInt(self.profileImageView.frame.width))
-                updateProperty?.commitChangesWithCompletion(nil)
-                self.profileImageView.downloadImageFrom((FIRAuth.auth()?.currentUser?.photoURL)!.absoluteString)
-                self.addButton.enabled = true
-                self.updatePins()
-            }
-        }
-    }
-
     @IBAction func addButtonTapped(sender: AnyObject) {
         let addNavigation = UINavigationController(rootViewController: AddViewController())
         self.presentViewController(addNavigation, animated: true, completion: nil)
@@ -118,6 +87,10 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GIDSignInD
         })
     }
     
+}
+
+extension MapViewController: CLLocationManagerDelegate {
+    
     func locationManager(manager: CLLocationManager, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
         if status == CLAuthorizationStatus.AuthorizedWhenInUse {
             locationManager?.startUpdatingLocation()
@@ -132,5 +105,16 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GIDSignInD
         mapView.animateWithCameraUpdate(cameraUpdate)
         manager.stopUpdatingLocation()
     }
+    
+}
+
+extension MapViewController: GMSMapViewDelegate {
+    
+    func mapView(mapView: GMSMapView, didTapMarker marker: GMSMarker) -> Bool {
+        let pin = marker.userData as! Pin
+        self.presentViewController(PhotoViewController(pin: pin), animated: true, completion: nil)
+        return true
+    }
+    
 }
 
