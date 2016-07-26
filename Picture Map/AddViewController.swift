@@ -91,10 +91,12 @@ class AddViewController: UIViewController, UINavigationControllerDelegate {
     }
     
     func backPressed() {
+        self.view.endEditing(true)
         self.presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
     }
     
     func donePressed() {
+        self.view.endEditing(true)
         let currentUser = FIRAuth.auth()?.currentUser
         
         guard let userID = currentUser?.uid else {
