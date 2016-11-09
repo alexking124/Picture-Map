@@ -65,7 +65,7 @@ class SettingsViewController: UIViewController {
         if let currentUser = FIRAuth.auth()?.currentUser {
             self.nameLabel.text = currentUser.displayName
             if let photoURL = currentUser.photoURL {
-                self.profilePictureImageView.downloadImageFrom(photoURL.absoluteString)
+                self.profilePictureImageView.downloadImageFrom(photoURL.absoluteString!)
             }
             self.authenticationButton.setTitle("Log Out", forState: .Normal)
             self.authenticationButton.tintColor = UIColor.redColor()

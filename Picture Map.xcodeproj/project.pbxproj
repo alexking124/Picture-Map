@@ -193,6 +193,7 @@
 					39378B011D30641D005B927E = {
 						CreatedOnToolsVersion = 7.3.1;
 						DevelopmentTeam = T36GJ569RT;
+						LastSwiftMigration = 0810;
 						SystemCapabilities = {
 							com.apple.InAppPurchase = {
 								enabled = 1;
@@ -461,6 +462,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.aking.Picture-Map";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				SWIFT_VERSION = 2.3;
 			};
 			name = Debug;
 		};
@@ -476,6 +478,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.aking.Picture-Map";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				SWIFT_VERSION = 2.3;
 			};
 			name = Release;
 		};
