@@ -16,6 +16,8 @@
 		39CDA4081D340E180081175A /* UIImageView+Download.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39CDA4071D340E180081175A /* UIImageView+Download.swift */; };
 		39CDA40A1D341A090081175A /* AddViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39CDA4091D341A090081175A /* AddViewController.swift */; };
 		39CDA40C1D341A550081175A /* AddViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 39CDA40B1D341A550081175A /* AddViewController.xib */; };
+		39F5CF311DD3CB4000AA5DDB /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39F5CF301DD3CB4000AA5DDB /* LoginViewController.swift */; };
+		39F5CF331DD3CB5B00AA5DDB /* LoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 39F5CF321DD3CB5B00AA5DDB /* LoginViewController.xib */; };
 		6B72EA841D35CC7A00319359 /* UIView+FillWithView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B72EA831D35CC7A00319359 /* UIView+FillWithView.swift */; };
 		6B72EA861D35CF0F00319359 /* ProgressViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B72EA851D35CF0F00319359 /* ProgressViewController.swift */; };
 		6B72EA881D35CF2F00319359 /* ProgressViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6B72EA871D35CF2F00319359 /* ProgressViewController.xib */; };
@@ -44,6 +46,9 @@
 		39CDA4071D340E180081175A /* UIImageView+Download.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "UIImageView+Download.swift"; path = "Picture Map/UIImageView+Download.swift"; sourceTree = "<group>"; };
 		39CDA4091D341A090081175A /* AddViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddViewController.swift; sourceTree = "<group>"; };
 		39CDA40B1D341A550081175A /* AddViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddViewController.xib; sourceTree = "<group>"; };
+		39F5CF301DD3CB4000AA5DDB /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		39F5CF321DD3CB5B00AA5DDB /* LoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoginViewController.xib; sourceTree = "<group>"; };
+		39F5CF341DD3DCDC00AA5DDB /* Picture Map.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Picture Map.entitlements"; sourceTree = "<group>"; };
 		6B72EA831D35CC7A00319359 /* UIView+FillWithView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "UIView+FillWithView.swift"; path = "Picture Map/UIView+FillWithView.swift"; sourceTree = "<group>"; };
 		6B72EA851D35CF0F00319359 /* ProgressViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProgressViewController.swift; sourceTree = "<group>"; };
 		6B72EA871D35CF2F00319359 /* ProgressViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProgressViewController.xib; sourceTree = "<group>"; };
@@ -94,6 +99,7 @@
 		39378B041D30641D005B927E /* Picture Map */ = {
 			isa = PBXGroup;
 			children = (
+				39F5CF341DD3DCDC00AA5DDB /* Picture Map.entitlements */,
 				39378B0C1D30641D005B927E /* Assets.xcassets */,
 				39CDA4061D340DC00081175A /* Extension */,
 				39CDA40D1D341A640081175A /* Supporting Files */,
@@ -102,6 +108,8 @@
 				39378B051D30641D005B927E /* AppDelegate.swift */,
 				6BB97BF41D3FEECE00D3F8A0 /* IAPHelper.swift */,
 				6BB97BF01D3D71C500D3F8A0 /* ImageLoader.swift */,
+				39F5CF301DD3CB4000AA5DDB /* LoginViewController.swift */,
+				39F5CF321DD3CB5B00AA5DDB /* LoginViewController.xib */,
 				39378B071D30641D005B927E /* MapViewController.swift */,
 				39CDA4041D3409AB0081175A /* MapViewController.xib */,
 				6B72EA8D1D382A1000319359 /* PhotoViewController.swift */,
@@ -198,6 +206,9 @@
 							com.apple.InAppPurchase = {
 								enabled = 1;
 							};
+							com.apple.Keychain = {
+								enabled = 1;
+							};
 						};
 					};
 				};
@@ -233,6 +244,7 @@
 				39378B0D1D30641D005B927E /* Assets.xcassets in Resources */,
 				39CDA4051D3409AB0081175A /* MapViewController.xib in Resources */,
 				6B72EA881D35CF2F00319359 /* ProgressViewController.xib in Resources */,
+				39F5CF331DD3CB5B00AA5DDB /* LoginViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -347,6 +359,7 @@
 				6B8CD47D1D405AF70088CBA7 /* UserProfile.swift in Sources */,
 				39CDA40A1D341A090081175A /* AddViewController.swift in Sources */,
 				6BB97BF51D3FEECE00D3F8A0 /* IAPHelper.swift in Sources */,
+				39F5CF311DD3CB4000AA5DDB /* LoginViewController.swift in Sources */,
 				39CDA4081D340E180081175A /* UIImageView+Download.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -455,6 +468,7 @@
 			baseConfigurationReference = F5824E4D9B0AAE20D3A21A5C /* Pods-Picture Map.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "Picture Map/Picture Map.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = "Picture Map/Info.plist";
@@ -471,6 +485,7 @@
 			baseConfigurationReference = 6EC63693688BC1DA0F804006 /* Pods-Picture Map.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "Picture Map/Picture Map.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = "Picture Map/Info.plist";

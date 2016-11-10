@@ -121,8 +121,16 @@ class AddViewController: UIViewController, UINavigationControllerDelegate {
                                 "title": self.titleLabel.text as! AnyObject,
                                 "description": self.descriptionTextView.text]
                 let databaseReference = FIRDatabase.database().reference()
-                let test = databaseReference.child("pins").child(userID).childByAutoId()
-                test.setValue(pinMetadata)
+                let pinsReference = databaseReference.child("pins").child(userID).childByAutoId()
+                pinsReference.setValue(pinMetadata)
+                
+                let usageReference = databaseReference.child("limit").child(userID)
+                usageReference.observeSingleEventOfType(.Value, withBlock: { (snapshot) in
+                    guard let value = snapshot.value else {
+                        return
+                    }
+                    usageReference.setValue(value.integerValue - 1)
+                })
             }
             
             self.presentingViewController?.dismissViewControllerAnimated(true, completion: nil)

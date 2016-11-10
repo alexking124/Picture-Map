@@ -21,6 +21,7 @@ class MapViewController: UIViewController {
     @IBOutlet weak var addButton: UIButton!
     
     var locationManager: CLLocationManager?
+    var remainingPhotos: NSInteger?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,9 +34,12 @@ class MapViewController: UIViewController {
         locationManager = CLLocationManager()
         locationManager?.delegate = self
         
+        remainingPhotos = -1
+        
         FIRAuth.auth()?.addAuthStateDidChangeListener({ (auth, user) in
             if user != nil {
                 self.updatePins()
+                self.checkUsage()
                 self.addButton.enabled = true
             } else {
                 self.mapView.clear()
@@ -58,8 +62,13 @@ class MapViewController: UIViewController {
     }
     
     @IBAction func addButtonTapped(sender: AnyObject) {
-        let addNavigation = UINavigationController(rootViewController: AddViewController())
-        self.presentViewController(addNavigation, animated: true, completion: nil)
+        if (self.remainingPhotos > 0) {
+            let addNavigation = UINavigationController(rootViewController: AddViewController())
+            self.presentViewController(addNavigation, animated: true, completion: nil)
+        }
+        if (self.remainingPhotos == 0) {
+            self.presentUsageWarning()
+        }
     }
     
     private func updatePins() {
@@ -85,6 +94,36 @@ class MapViewController: UIViewController {
             markerView.clipsToBounds = true
             marker.iconView = markerView
         })
+    }
+    
+    private func checkUsage() {
+        guard let currentUser = FIRAuth.auth()?.currentUser else {
+            return;
+        }
+        
+        let databaseReference = FIRDatabase.database().reference()
+        let usageReference = databaseReference.child("limit").child(currentUser.uid)
+        usageReference.observeEventType(.Value, withBlock: { (snapshot) in
+            guard snapshot.exists() else {
+                usageReference.setValue(10)
+                return
+            }
+            guard let value = snapshot.value else {
+                return
+            }
+            self.remainingPhotos = value.integerValue
+            if (value.integerValue == 0) {
+                self.presentUsageWarning()
+            }
+        })
+    }
+    
+    private func presentUsageWarning() {
+        let alertController = UIAlertController(title: "You've uploaded your last photo!", message: "Please purchase more photos to continue adding to your Photo Map!", preferredStyle: .Alert)
+        let defaultAction = UIAlertAction(title: "OK", style: .Default, handler: { (action) in
+        })
+        alertController.addAction(defaultAction)
+        self.presentViewController(alertController, animated: true, completion: nil)
     }
     
 }

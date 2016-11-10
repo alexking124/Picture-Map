@@ -9,6 +9,7 @@
 import UIKit
 
 import Firebase
+import FirebaseAuth
 import GoogleMaps
 import GoogleSignIn
 
@@ -24,7 +25,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         self.window = UIWindow.init(frame: UIScreen.mainScreen().bounds)
         self.window!.makeKeyAndVisible()
+        
         self.window!.rootViewController = MapViewController()
+        if (FIRAuth.auth()?.currentUser == nil) {
+            self.window!.rootViewController?.presentViewController(LoginViewController(), animated: false, completion: nil)
+        }
         
         return true
     }

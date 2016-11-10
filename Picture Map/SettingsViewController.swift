@@ -16,7 +16,7 @@ class SettingsViewController: UIViewController {
     
     @IBOutlet weak var profilePictureImageView: UIImageView!
     @IBOutlet weak var nameLabel: UILabel!
-    @IBOutlet weak var accountTypeLabel: UILabel!
+    @IBOutlet weak var photosRemainingLabel: UILabel!
     @IBOutlet weak var upgradeButton: UIButton!
     @IBOutlet weak var authenticationButton: UIButton!
     
@@ -31,12 +31,15 @@ class SettingsViewController: UIViewController {
         self.profilePictureImageView.layer.cornerRadius = self.profilePictureImageView.frame.width/2
         self.profilePictureImageView.clipsToBounds = true
         
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(upgradeCompleted), name: IAPHelper.IAPHelperPurchaseNotification, object: nil)
+        
+        self.updateUsage()
         
         let doneButton = UIBarButtonItem(barButtonSystemItem: .Done, target: self, action: #selector(donePressed))
         doneButton.tintColor = UIColor.darkGrayColor()
         self.navigationItem.leftBarButtonItem = doneButton
         
-        self.iapHelper = IAPHelper(productIds: ["com.aking.PictureMap.unlimited"])
+        self.iapHelper = IAPHelper(productIds: ["com.aking.PictureMap.unlock20"])
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -79,6 +82,26 @@ class SettingsViewController: UIViewController {
         self.authenticationButton.tintColor = UIButton().tintColor
     }
     
+    private func updateUsage() {
+        guard let currentUser = FIRAuth.auth()?.currentUser else {
+            return;
+        }
+        
+        let databaseReference = FIRDatabase.database().reference()
+        let usageReference = databaseReference.child("limit").child(currentUser.uid)
+        usageReference.observeEventType(.Value, withBlock: { (snapshot) in
+            guard snapshot.exists() else {
+                self.photosRemainingLabel.text = "-"
+                return
+            }
+            guard let value = snapshot.value else {
+                self.photosRemainingLabel.text = "-"
+                return
+            }
+            self.photosRemainingLabel.text = String(value.integerValue!)
+        })
+    }
+    
     @IBAction func upgradeAction(sender: AnyObject) {
         guard let iapHelper = self.iapHelper else {
             return
@@ -86,13 +109,33 @@ class SettingsViewController: UIViewController {
         iapHelper.requestProducts({ (success, products) in
             if success == true {
                 for product in products! {
-                    if product.productIdentifier == "com.aking.PictureMap.unlimited" {
+                    if product.productIdentifier == "com.aking.PictureMap.unlock20" {
                         iapHelper.buyProduct(product)
                     }
                 }
             }
         })
-
+    }
+    
+    @objc private func upgradeCompleted(sender: NSNotification) {
+        guard let identifier = sender.object else {
+            return
+        }
+        if (identifier.isEqualToString("com.aking.PictureMap.unlock20")) {
+            let currentUser = FIRAuth.auth()?.currentUser
+            
+            guard let userID = currentUser?.uid else {
+                return
+            }
+            let databaseReference = FIRDatabase.database().reference()
+            let usageReference = databaseReference.child("limit").child(userID)
+            usageReference.observeSingleEventOfType(.Value, withBlock: { (snapshot) in
+                guard let value = snapshot.value else {
+                    return
+                }
+                usageReference.setValue(value.integerValue + 20)
+            })
+        }
     }
     
     @IBAction func authenticationButtonTapped(sender: AnyObject) {
