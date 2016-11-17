@@ -28,7 +28,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         self.window!.rootViewController = MapViewController()
         if (FIRAuth.auth()?.currentUser == nil) {
-            self.window!.rootViewController?.presentViewController(LoginViewController(), animated: false, completion: nil)
+            self.window!.rootViewController?.presentViewController(WelcomeViewController(), animated: false, completion: nil)
         }
         
         return true
