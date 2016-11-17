@@ -23,13 +23,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         FIRApp.configure()
         FIRDatabase.database().persistenceEnabled = true
         
+        let rootViewController = RootTabBarController()
         self.window = UIWindow.init(frame: UIScreen.mainScreen().bounds)
         self.window!.makeKeyAndVisible()
-        
-        self.window!.rootViewController = MapViewController()
-        if (FIRAuth.auth()?.currentUser == nil) {
-            self.window!.rootViewController?.presentViewController(WelcomeViewController(), animated: false, completion: nil)
-        }
+        self.window!.rootViewController = rootViewController
         
         return true
     }

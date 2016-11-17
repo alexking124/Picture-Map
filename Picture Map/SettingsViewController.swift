@@ -66,7 +66,7 @@ class SettingsViewController: UIViewController {
     
     func updateViewForLoggedIn() {
         if let currentUser = FIRAuth.auth()?.currentUser {
-            self.nameLabel.text = currentUser.displayName
+            self.nameLabel.text = currentUser.email
             if let photoURL = currentUser.photoURL {
                 self.profilePictureImageView.downloadImageFrom(photoURL.absoluteString!)
             }
@@ -80,6 +80,8 @@ class SettingsViewController: UIViewController {
         self.profilePictureImageView.image = UIImage(named: "account_circle")
         self.authenticationButton.setTitle("Log In", forState: .Normal)
         self.authenticationButton.tintColor = UIButton().tintColor
+        
+        self.presentingViewController?.dismissViewControllerAnimated(true, completion:nil)
     }
     
     private func updateUsage() {

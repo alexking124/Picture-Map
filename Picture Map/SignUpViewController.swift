@@ -38,8 +38,7 @@ class SignUpViewController: UIViewController {
     @IBAction func signUpButtonAction(sender: AnyObject) {
         FIRAuth.auth()?.createUserWithEmail(emailTextField.text!, password: passwordTextField.text!, completion: { (user, error) in
             print("User: \(user), error: \(error)")
-            self.presentingViewController?.presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
-//            self.presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
+            self.presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
         })
     }
 

@@ -11,7 +11,6 @@ import UIKit
 import GoogleMaps
 import GoogleSignIn
 import Firebase
-import FirebaseAuthUI
 
 class WelcomeViewController: UIViewController {
     
