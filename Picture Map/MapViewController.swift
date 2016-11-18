@@ -105,7 +105,7 @@ class MapViewController: UIViewController {
         let usageReference = databaseReference.child("limit").child(currentUser.uid)
         usageReference.observeEventType(.Value, withBlock: { (snapshot) in
             guard snapshot.exists() else {
-                usageReference.setValue(10)
+                usageReference.setValue(20)
                 return
             }
             guard let value = snapshot.value else {

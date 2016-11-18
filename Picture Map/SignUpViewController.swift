@@ -37,8 +37,15 @@ class SignUpViewController: UIViewController {
     
     @IBAction func signUpButtonAction(sender: AnyObject) {
         FIRAuth.auth()?.createUserWithEmail(emailTextField.text!, password: passwordTextField.text!, completion: { (user, error) in
-            print("User: \(user), error: \(error)")
-            self.presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
+            if (error != nil) {
+                print("Error logging in: \(error)")
+                let errorAlert = UIAlertController(title: "Error logging in", message: error?.localizedDescription, preferredStyle: .Alert)
+                let defaultAction = UIAlertAction(title: "OK", style: .Default, handler: nil)
+                errorAlert.addAction(defaultAction)
+                self.presentViewController(errorAlert, animated: true, completion: nil)
+            } else {
+                self.presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
+            }
         })
     }
 

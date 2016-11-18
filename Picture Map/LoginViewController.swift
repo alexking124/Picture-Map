@@ -39,8 +39,16 @@ class LoginViewController: UIViewController {
 
     @IBAction func logInButtonPressed(sender: AnyObject) {
         FIRAuth.auth()?.signInWithEmail(self.emailTextField.text!, password: self.passwordTextField.text!, completion: { (user, error) in
-            print("User: \(user), error: \(error)")
-            self.presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
+//            print("User: \(user), error: \(error)")
+            if (error != nil) {
+                print("Error logging in: \(error)")
+                let errorAlert = UIAlertController(title: "Error logging in", message: error?.localizedDescription, preferredStyle: .Alert)
+                let defaultAction = UIAlertAction(title: "OK", style: .Default, handler: nil)
+                errorAlert.addAction(defaultAction)
+                self.presentViewController(errorAlert, animated: true, completion: nil)
+            } else {
+                self.presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
+            }
         })
     }
     
