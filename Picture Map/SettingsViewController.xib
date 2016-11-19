@@ -74,13 +74,13 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <button opaque="NO" contentMode="scaleAspectFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="f7k-Gd-NS0">
-                            <rect key="frame" x="264" y="-3" width="71" height="27"/>
+                            <rect key="frame" x="246" y="-3" width="89" height="27"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="30" id="2sb-s8-v0b"/>
                             </constraints>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <inset key="contentEdgeInsets" minX="7" minY="5" maxX="7" maxY="5"/>
-                            <state key="normal" title="Upgrade" backgroundImage="border_rectangle"/>
+                            <state key="normal" title="Add Photos" backgroundImage="border_rectangle"/>
                             <variation key="default">
                                 <mask key="constraints">
                                     <exclude reference="2sb-s8-v0b"/>
