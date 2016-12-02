@@ -20,8 +20,12 @@ class MapViewController: UIViewController {
     @IBOutlet var mapView: GMSMapView!
     @IBOutlet weak var addButton: UIButton!
     
-    var locationManager: CLLocationManager?
-    var remainingPhotos: NSInteger?
+    private var locationManager: CLLocationManager?
+    private var remainingPhotos: NSInteger?
+    private var lastTappedMarker: GMSMarker?
+    
+    private var childAddedObserverHandle: UInt = 0
+    private var childRemovedObserverHandle: UInt = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,10 +42,12 @@ class MapViewController: UIViewController {
         
         FIRAuth.auth()?.addAuthStateDidChangeListener({ (auth, user) in
             if user != nil {
-                self.updatePins()
+                self.registerForPinUpdates()
                 self.checkUsage()
                 self.addButton.enabled = true
             } else {
+                self.childAddedObserverHandle = 0
+                self.childRemovedObserverHandle = 0
                 self.mapView.clear()
                 self.addButton.enabled = false
             }
@@ -71,29 +77,44 @@ class MapViewController: UIViewController {
         }
     }
     
-    private func updatePins() {
+    private func registerForPinUpdates() {
         guard let currentUser = FIRAuth.auth()?.currentUser else {
             return;
         }
         
         let databaseReference = FIRDatabase.database().reference()
         let userReference = databaseReference.child("pins").child(currentUser.uid)
-        userReference.observeEventType(.ChildAdded, withBlock: { (snapshot) in
-            let pin = Pin(snapshot: snapshot)
-            let marker = GMSMarker(position: CLLocationCoordinate2D(latitude: pin.latitude, longitude: pin.longitude))
-            marker.groundAnchor = CGPointMake(0.5, 0.5)
-            marker.map = self.mapView
-            marker.userData = pin
-            
-            let markerView = UIImageView(image: UIImage(named: "empty_image"))
-            ImageLoader.sharedLoader.imageForPin(pin, completion: { (image) in
-                markerView.image = image
+        if (self.childAddedObserverHandle == 0) {
+            self.childAddedObserverHandle = userReference.observeEventType(.ChildAdded, withBlock: { (snapshot) in
+                self.addPinFromSnapshot(snapshot)
             })
-            markerView.contentMode = .ScaleAspectFill
-            markerView.layer.cornerRadius = 5
-            markerView.clipsToBounds = true
-            marker.iconView = markerView
+        }
+        
+        if (self.childRemovedObserverHandle == 0) {
+            self.childRemovedObserverHandle = userReference.observeEventType(.ChildRemoved, withBlock: { (snapshot) in
+                guard let marker = self.lastTappedMarker else {
+                    return
+                }
+                marker.map = nil
+            })
+        }
+    }
+    
+    private func addPinFromSnapshot(snapshot: FIRDataSnapshot) {
+        let pin = Pin(snapshot: snapshot)
+        let marker = GMSMarker(position: CLLocationCoordinate2D(latitude: pin.latitude, longitude: pin.longitude))
+        marker.groundAnchor = CGPointMake(0.5, 0.5)
+        marker.map = self.mapView
+        marker.userData = pin
+        
+        let markerView = UIImageView(image: UIImage(named: "empty_image"))
+        ImageLoader.sharedLoader.imageForPin(pin, completion: { (image) in
+            markerView.image = image
         })
+        markerView.contentMode = .ScaleAspectFill
+        markerView.layer.cornerRadius = 5
+        markerView.clipsToBounds = true
+        marker.iconView = markerView
     }
     
     private func checkUsage() {
@@ -151,6 +172,7 @@ extension MapViewController: GMSMapViewDelegate {
     
     func mapView(mapView: GMSMapView, didTapMarker marker: GMSMarker) -> Bool {
         let pin = marker.userData as! Pin
+        self.lastTappedMarker = marker
         self.presentViewController(PhotoViewController(pin: pin), animated: true, completion: nil)
         return true
     }

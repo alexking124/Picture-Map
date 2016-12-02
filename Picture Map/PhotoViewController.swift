@@ -8,6 +8,10 @@
 
 import UIKit
 
+import FirebaseAuth
+import FirebaseStorage
+import FirebaseDatabase
+
 class PhotoViewController: UIViewController, UIScrollViewDelegate {
     
     @IBOutlet weak var backButton: UIButton!
@@ -90,6 +94,49 @@ class PhotoViewController: UIViewController, UIScrollViewDelegate {
     
     @IBAction func backPressed(sender: AnyObject) {
         self.presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    @IBAction func deleteButtonPressed(sender: AnyObject) {
+        let deleteAlert = UIAlertController(title: "Confirm Delete", message: "Are you sure you want to delete this photo?", preferredStyle: .Alert)
+        let confirmAction = UIAlertAction(title: "Delete", style: .Destructive) { (action) in
+            //Delete image
+            self.deleteCurrentImage()
+            self.presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
+        }
+        let cancelAction = UIAlertAction(title: "Cancel", style: .Default, handler: nil)
+        deleteAlert.addAction(cancelAction)
+        deleteAlert.addAction(confirmAction)
+        self.presentViewController(deleteAlert, animated: true, completion: nil)
+    }
+    
+    private func deleteCurrentImage() {
+        let currentUser = FIRAuth.auth()?.currentUser
+        guard let userID = currentUser?.uid else {
+            return
+        }
+        
+        let databaseReference = FIRDatabase.database().reference()
+        let pinReference = databaseReference.child("pins").child(userID).child(self.pin.identifier)
+        pinReference.removeValue()
+        
+        let usageReference = databaseReference.child("limit").child(userID)
+        usageReference.observeSingleEventOfType(.Value, withBlock: { (snapshot) in
+            guard let value = snapshot.value else {
+                return
+            }
+            usageReference.setValue(value.integerValue + 1)
+        })
+        
+        let storageReference = FIRStorage.storage().reference()
+        let downloadURL = self.pin.imagePath
+        let identifier = downloadURL.componentsSeparatedByString("%2F")[1].componentsSeparatedByString("?")[0]
+        let remotePath = String(format: "%@/%@", userID, identifier)
+        storageReference.child(remotePath).deleteWithCompletion { (error) in
+            if (error != nil) {
+                print("Error deleting photo from storage: \(error)")
+            }
+            
+        }
     }
     
     @IBAction func doubleTappedImage(sender: AnyObject) {

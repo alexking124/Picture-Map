@@ -94,11 +94,25 @@
                         <constraint firstAttribute="height" constant="40" id="2PV-ad-bbK"/>
                         <constraint firstAttribute="width" secondItem="Yso-Mg-IpI" secondAttribute="height" multiplier="1:1" id="NX7-ND-ur7"/>
                     </constraints>
+                    <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <state key="normal" image="chevron_left_white">
                         <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </state>
                     <connections>
                         <action selector="backPressed:" destination="-1" eventType="touchUpInside" id="9hF-lF-Uwh"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vIM-Mu-S26">
+                    <rect key="frame" x="334" y="27.5" width="25" height="25"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="25" id="qkp-Rd-kGa"/>
+                        <constraint firstAttribute="width" secondItem="vIM-Mu-S26" secondAttribute="height" multiplier="1:1" id="wTa-my-ZDF"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                    <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <state key="normal" backgroundImage="delete_icon"/>
+                    <connections>
+                        <action selector="deleteButtonPressed:" destination="-1" eventType="touchUpInside" id="AZh-Ju-5Mo"/>
                     </connections>
                 </button>
             </subviews>
@@ -108,11 +122,13 @@
                 <constraint firstItem="N27-Nl-aws" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="AcR-nr-l3Z"/>
                 <constraint firstAttribute="bottom" secondItem="SI1-Ws-gBj" secondAttribute="bottom" id="DV4-1f-40S"/>
                 <constraint firstItem="4Ho-1A-qci" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="LnM-er-8og"/>
+                <constraint firstAttribute="trailing" secondItem="vIM-Mu-S26" secondAttribute="trailing" constant="16" id="QMa-2Z-i5u"/>
                 <constraint firstItem="Yso-Mg-IpI" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="20" symbolic="YES" id="WhD-9J-oMm"/>
                 <constraint firstItem="EbN-Jb-QdM" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="Xie-UP-J7G"/>
                 <constraint firstAttribute="trailing" secondItem="SI1-Ws-gBj" secondAttribute="trailing" id="YzR-Br-p6u"/>
                 <constraint firstItem="4Ho-1A-qci" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="aUD-Tf-R89"/>
                 <constraint firstAttribute="trailing" secondItem="EbN-Jb-QdM" secondAttribute="trailing" id="bHH-4p-He0"/>
+                <constraint firstItem="vIM-Mu-S26" firstAttribute="centerY" secondItem="Yso-Mg-IpI" secondAttribute="centerY" id="clj-t9-GD4"/>
                 <constraint firstItem="SI1-Ws-gBj" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="epJ-fH-kKi"/>
                 <constraint firstAttribute="bottom" secondItem="EbN-Jb-QdM" secondAttribute="bottom" id="nP2-XV-qep"/>
                 <constraint firstItem="Yso-Mg-IpI" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="o7d-7k-zCf"/>
@@ -141,5 +157,6 @@
     </objects>
     <resources>
         <image name="chevron_left_white" width="48" height="48"/>
+        <image name="delete_icon" width="36" height="36"/>
     </resources>
 </document>
