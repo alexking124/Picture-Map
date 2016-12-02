@@ -14,6 +14,7 @@
             <connections>
                 <outlet property="backButton" destination="Yso-Mg-IpI" id="wcu-ZO-bdw"/>
                 <outlet property="bottomContentView" destination="N27-Nl-aws" id="NQ1-aY-dJa"/>
+                <outlet property="deleteButton" destination="vIM-Mu-S26" id="PaG-qF-s6e"/>
                 <outlet property="descriptionLabel" destination="d9H-cs-PXx" id="qUP-e6-Q4R"/>
                 <outlet property="doubleTapRecognizer" destination="sgC-X9-BHB" id="Oxi-In-Vna"/>
                 <outlet property="imageView" destination="928-X4-zd8" id="yYL-Yp-orj"/>

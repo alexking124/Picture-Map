@@ -15,6 +15,7 @@ import FirebaseDatabase
 class PhotoViewController: UIViewController, UIScrollViewDelegate {
     
     @IBOutlet weak var backButton: UIButton!
+    @IBOutlet weak var deleteButton: UIButton!
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var secondaryImageView: UIImageView!
@@ -153,6 +154,7 @@ class PhotoViewController: UIViewController, UIScrollViewDelegate {
         UIView.animateWithDuration(0.3) {
             self.bottomContentView.alpha = 1.0 - self.bottomContentView.alpha
             self.backButton.alpha = 1.0 - self.backButton.alpha
+            self.deleteButton.alpha = 1.0 - self.deleteButton.alpha
         }
     }
     
