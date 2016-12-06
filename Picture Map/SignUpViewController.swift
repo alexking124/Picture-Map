@@ -16,12 +16,20 @@ class SignUpViewController: UIViewController {
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
     @IBOutlet weak var confirmPasswordTextField: UITextField!
+    @IBOutlet weak var emailImageView: UIImageView!
+    @IBOutlet weak var passwordImageView: UIImageView!
+    @IBOutlet weak var confirmPasswordImageView: UIImageView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
         self.signUpButton.enabled = false
+        
+        let imageTint = UIColor.darkGrayColor()
+        emailImageView.tintColor = imageTint
+        passwordImageView.tintColor = imageTint
+        confirmPasswordImageView.tintColor = imageTint
     }
     
     @IBAction func textFieldChanged(sender: AnyObject) {

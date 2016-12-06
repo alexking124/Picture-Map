@@ -16,6 +16,8 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
     @IBOutlet weak var logInButton: UIButton!
+    @IBOutlet weak var emailImageView: UIImageView!
+    @IBOutlet weak var passwordImageView: UIImageView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,6 +25,8 @@ class LoginViewController: UIViewController {
         // Do any additional setup after loading the view.
         self.logInButton.enabled = false
         self.navigationController?.navigationBarHidden = true
+        self.emailImageView.tintColor = UIColor.darkGrayColor()
+        self.passwordImageView.tintColor = UIColor.darkGrayColor()
     }
     
     @IBAction func backButtonPressed(sender: AnyObject) {
