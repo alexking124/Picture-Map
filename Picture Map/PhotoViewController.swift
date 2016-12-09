@@ -98,10 +98,25 @@ class PhotoViewController: UIViewController, UIScrollViewDelegate {
     }
     
     @IBAction func editButtonPressed(sender: AnyObject) {
+        let editAlert = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
         
+        let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)
+        editAlert.addAction(cancelAction)
+        
+        let deleteAction = UIAlertAction(title: "Delete", style: .Default) { (action) in
+            self.deleteButtonPressed()
+        }
+        editAlert.addAction(deleteAction)
+        
+        let editAction = UIAlertAction(title: "Edit", style: .Default) { (action) in
+            
+        }
+        editAlert.addAction(editAction)
+        
+        self.presentViewController(editAlert, animated: true, completion: nil)
     }
     
-    func deleteButtonPressed(sender: AnyObject) {
+    func deleteButtonPressed() {
         let deleteAlert = UIAlertController(title: "Confirm Delete", message: "Are you sure you want to delete this photo?", preferredStyle: .Alert)
         let confirmAction = UIAlertAction(title: "Delete", style: .Destructive) { (action) in
             //Delete image
