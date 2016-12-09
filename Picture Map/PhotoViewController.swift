@@ -15,7 +15,7 @@ import FirebaseDatabase
 class PhotoViewController: UIViewController, UIScrollViewDelegate {
     
     @IBOutlet weak var backButton: UIButton!
-    @IBOutlet weak var deleteButton: UIButton!
+    @IBOutlet weak var editButton: UIButton!
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var secondaryImageView: UIImageView!
@@ -97,7 +97,11 @@ class PhotoViewController: UIViewController, UIScrollViewDelegate {
         self.presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
     }
     
-    @IBAction func deleteButtonPressed(sender: AnyObject) {
+    @IBAction func editButtonPressed(sender: AnyObject) {
+        
+    }
+    
+    func deleteButtonPressed(sender: AnyObject) {
         let deleteAlert = UIAlertController(title: "Confirm Delete", message: "Are you sure you want to delete this photo?", preferredStyle: .Alert)
         let confirmAction = UIAlertAction(title: "Delete", style: .Destructive) { (action) in
             //Delete image
@@ -154,7 +158,7 @@ class PhotoViewController: UIViewController, UIScrollViewDelegate {
         UIView.animateWithDuration(0.3) {
             self.bottomContentView.alpha = 1.0 - self.bottomContentView.alpha
             self.backButton.alpha = 1.0 - self.backButton.alpha
-            self.deleteButton.alpha = 1.0 - self.deleteButton.alpha
+            self.editButton.alpha = 1.0 - self.editButton.alpha
         }
     }
     

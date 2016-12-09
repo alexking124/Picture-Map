@@ -14,9 +14,9 @@
             <connections>
                 <outlet property="backButton" destination="Yso-Mg-IpI" id="wcu-ZO-bdw"/>
                 <outlet property="bottomContentView" destination="N27-Nl-aws" id="NQ1-aY-dJa"/>
-                <outlet property="deleteButton" destination="vIM-Mu-S26" id="PaG-qF-s6e"/>
                 <outlet property="descriptionLabel" destination="d9H-cs-PXx" id="qUP-e6-Q4R"/>
                 <outlet property="doubleTapRecognizer" destination="sgC-X9-BHB" id="Oxi-In-Vna"/>
+                <outlet property="editButton" destination="vIM-Mu-S26" id="N0f-k8-jUi"/>
                 <outlet property="imageView" destination="928-X4-zd8" id="yYL-Yp-orj"/>
                 <outlet property="loadingIndicator" destination="4Ho-1A-qci" id="Fo1-Qu-pdu"/>
                 <outlet property="scrollView" destination="SI1-Ws-gBj" id="Eea-Dd-tm2"/>
@@ -104,16 +104,16 @@
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vIM-Mu-S26">
-                    <rect key="frame" x="334" y="27.5" width="25" height="25"/>
+                    <rect key="frame" x="334" y="28" width="25" height="25"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="25" id="qkp-Rd-kGa"/>
                         <constraint firstAttribute="width" secondItem="vIM-Mu-S26" secondAttribute="height" multiplier="1:1" id="wTa-my-ZDF"/>
                     </constraints>
                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
                     <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    <state key="normal" backgroundImage="delete_icon"/>
+                    <state key="normal" backgroundImage="edit_button"/>
                     <connections>
-                        <action selector="deleteButtonPressed:" destination="-1" eventType="touchUpInside" id="AZh-Ju-5Mo"/>
+                        <action selector="editButtonPressed:" destination="-1" eventType="touchUpInside" id="XgT-vG-8yK"/>
                     </connections>
                 </button>
             </subviews>
@@ -158,6 +158,6 @@
     </objects>
     <resources>
         <image name="chevron_left_white" width="48" height="48"/>
-        <image name="delete_icon" width="36" height="36"/>
+        <image name="edit_button" width="36" height="36"/>
     </resources>
 </document>
