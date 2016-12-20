@@ -24,41 +24,41 @@ class SignUpViewController: UIViewController {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-        self.signUpButton.enabled = false
+        self.signUpButton.isEnabled = false
         
-        let imageTint = UIColor.darkGrayColor()
+        let imageTint = UIColor.darkGray
         emailImageView.tintColor = imageTint
         passwordImageView.tintColor = imageTint
         confirmPasswordImageView.tintColor = imageTint
     }
     
-    @IBAction func textFieldChanged(sender: AnyObject) {
+    @IBAction func textFieldChanged(_ sender: AnyObject) {
         if (emailTextField.text!.isEmpty || passwordTextField.text!.isEmpty || confirmPasswordTextField.text!.isEmpty) {
-            self.signUpButton.enabled = false
+            self.signUpButton.isEnabled = false
         } else {
             if (passwordTextField.text! == confirmPasswordTextField.text) {
-                self.signUpButton.enabled = true
+                self.signUpButton.isEnabled = true
             }
             
         }
     }
     
-    @IBAction func signUpButtonAction(sender: AnyObject) {
-        FIRAuth.auth()?.createUserWithEmail(emailTextField.text!, password: passwordTextField.text!, completion: { (user, error) in
+    @IBAction func signUpButtonAction(_ sender: AnyObject) {
+        FIRAuth.auth()?.createUser(withEmail: emailTextField.text!, password: passwordTextField.text!, completion: { (user, error) in
             if (error != nil) {
                 print("Error logging in: \(error)")
-                let errorAlert = UIAlertController(title: "Error logging in", message: error?.localizedDescription, preferredStyle: .Alert)
-                let defaultAction = UIAlertAction(title: "OK", style: .Default, handler: nil)
+                let errorAlert = UIAlertController(title: "Error logging in", message: error?.localizedDescription, preferredStyle: .alert)
+                let defaultAction = UIAlertAction(title: "OK", style: .default, handler: nil)
                 errorAlert.addAction(defaultAction)
-                self.presentViewController(errorAlert, animated: true, completion: nil)
+                self.present(errorAlert, animated: true, completion: nil)
             } else {
-                self.presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
+                self.presentingViewController?.dismiss(animated: true, completion: nil)
             }
         })
     }
 
-    @IBAction func backButtonAction(sender: AnyObject) {
-        self.navigationController?.popViewControllerAnimated(true)
+    @IBAction func backButtonAction(_ sender: AnyObject) {
+        _ = self.navigationController?.popViewController(animated: true)
     }
 
 }

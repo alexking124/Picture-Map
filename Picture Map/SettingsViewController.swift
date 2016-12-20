@@ -31,21 +31,21 @@ class SettingsViewController: UIViewController {
         self.profilePictureImageView.layer.cornerRadius = self.profilePictureImageView.frame.width/2
         self.profilePictureImageView.clipsToBounds = true
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(upgradeCompleted), name: IAPHelper.IAPHelperPurchaseNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(upgradeCompleted), name: NSNotification.Name(rawValue: IAPHelper.IAPHelperPurchaseNotification), object: nil)
         
         self.updateUsage()
         
-        let doneButton = UIBarButtonItem(barButtonSystemItem: .Done, target: self, action: #selector(donePressed))
-        doneButton.tintColor = UIColor.darkGrayColor()
+        let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(donePressed))
+        doneButton.tintColor = UIColor.darkGray
         self.navigationItem.leftBarButtonItem = doneButton
         
         self.iapHelper = IAPHelper(productIds: ["com.aking.PictureMap.unlock20"])
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        self.authStateListenerToken = FIRAuth.auth()?.addAuthStateDidChangeListener({ (auth, user) in
+        self.authStateListenerToken = FIRAuth.auth()?.addStateDidChangeListener({ (auth, user) in
             if user != nil {
                 self.updateViewForLoggedIn()
             } else {
@@ -54,34 +54,34 @@ class SettingsViewController: UIViewController {
         })
     }
     
-    override func viewDidDisappear(animated: Bool) {
+    override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         
-        FIRAuth.auth()?.removeAuthStateDidChangeListener(self.authStateListenerToken!)
+        FIRAuth.auth()?.removeStateDidChangeListener(self.authStateListenerToken!)
     }
     
     func donePressed() {
-        self.presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
+        self.presentingViewController?.dismiss(animated: true, completion: nil)
     }
     
     func updateViewForLoggedIn() {
         if let currentUser = FIRAuth.auth()?.currentUser {
             self.nameLabel.text = currentUser.email
             if let photoURL = currentUser.photoURL {
-                self.profilePictureImageView.downloadImageFrom(photoURL.absoluteString!)
+                self.profilePictureImageView.downloadImageFrom(link: photoURL.absoluteString)
             }
-            self.authenticationButton.setTitle("Log Out", forState: .Normal)
-            self.authenticationButton.tintColor = UIColor.redColor()
+            self.authenticationButton.setTitle("Log Out", for: .normal)
+            self.authenticationButton.tintColor = UIColor.red
         }
     }
     
     func updateViewForLoggedOut() {
         self.nameLabel.text = ""
         self.profilePictureImageView.image = UIImage(named: "account_circle")
-        self.authenticationButton.setTitle("Log In", forState: .Normal)
+        self.authenticationButton.setTitle("Log In", for: .normal)
         self.authenticationButton.tintColor = UIButton().tintColor
         
-        self.presentingViewController?.dismissViewControllerAnimated(true, completion:nil)
+        self.presentingViewController?.dismiss(animated: true, completion:nil)
     }
     
     private func updateUsage() {
@@ -91,7 +91,7 @@ class SettingsViewController: UIViewController {
         
         let databaseReference = FIRDatabase.database().reference()
         let usageReference = databaseReference.child("limit").child(currentUser.uid)
-        usageReference.observeEventType(.Value, withBlock: { (snapshot) in
+        usageReference.observe(.value, with: { (snapshot) in
             guard snapshot.exists() else {
                 self.photosRemainingLabel.text = "-"
                 return
@@ -100,15 +100,15 @@ class SettingsViewController: UIViewController {
                 self.photosRemainingLabel.text = "-"
                 return
             }
-            self.photosRemainingLabel.text = String(value.integerValue!)
+            self.photosRemainingLabel.text = String((value as AnyObject).integerValue!)
         })
     }
     
-    @IBAction func upgradeAction(sender: AnyObject) {
+    @IBAction func upgradeAction(_ sender: AnyObject) {
         guard let iapHelper = self.iapHelper else {
             return
         }
-        iapHelper.requestProducts({ (success, products) in
+        iapHelper.requestProducts(completionHandler: { (success, products) in
             if success == true {
                 for product in products! {
                     if product.productIdentifier == "com.aking.PictureMap.unlock20" {
@@ -119,11 +119,11 @@ class SettingsViewController: UIViewController {
         })
     }
     
-    @objc private func upgradeCompleted(sender: NSNotification) {
+    @objc private func upgradeCompleted(_ sender: NSNotification) {
         guard let identifier = sender.object else {
             return
         }
-        if (identifier.isEqualToString("com.aking.PictureMap.unlock20")) {
+        if ((identifier as AnyObject).isEqual("com.aking.PictureMap.unlock20")) {
             let currentUser = FIRAuth.auth()?.currentUser
             
             guard let userID = currentUser?.uid else {
@@ -131,40 +131,18 @@ class SettingsViewController: UIViewController {
             }
             let databaseReference = FIRDatabase.database().reference()
             let usageReference = databaseReference.child("limit").child(userID)
-            usageReference.observeSingleEventOfType(.Value, withBlock: { (snapshot) in
+            usageReference.observeSingleEvent(of: .value, with: { (snapshot) in
                 guard let value = snapshot.value else {
                     return
                 }
-                usageReference.setValue(value.integerValue + 20)
+                usageReference.setValue((value as AnyObject).integerValue + 20)
             })
         }
     }
     
-    @IBAction func authenticationButtonTapped(sender: AnyObject) {
+    @IBAction func authenticationButtonTapped(_ sender: AnyObject) {
         if UserProfile.currentUser() != nil {
             UserProfile.logOut()
-        } else {
-            UserProfile.logInWithSignInDelegate(self, uiDelegate: self)
-        }
-    }
-    
-}
-
-extension SettingsViewController: GIDSignInDelegate, GIDSignInUIDelegate {
-    
-    func signIn(signIn: GIDSignIn!, didSignInForUser googleUser: GIDGoogleUser!, withError error: NSError?) {
-        if let googleUser = googleUser {
-            let authentication = googleUser.authentication
-            let credential = FIRGoogleAuthProvider.credentialWithIDToken(authentication.idToken, accessToken: authentication.accessToken)
-            FIRAuth.auth()?.signInWithCredential(credential) { (user, error) in
-                if error != nil {
-                    return
-                }
-                
-                let updateProperty = user?.profileChangeRequest()
-                updateProperty?.photoURL = googleUser.profile.imageURLWithDimension(60)
-                updateProperty?.commitChangesWithCompletion(nil)
-            }
         }
     }
     

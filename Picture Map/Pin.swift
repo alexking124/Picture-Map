@@ -17,15 +17,20 @@ class Pin {
     var title: String = ""
     var description: String = ""
     var identifier: String = ""
+    var dateTaken: Date = Date.distantPast
     
     init() {}
     
     init(snapshot: FIRDataSnapshot) {
-        self.latitude = snapshot.value!["latitude"] as! CLLocationDegrees
-        self.longitude = snapshot.value!["longitude"] as! CLLocationDegrees
-        self.imagePath = snapshot.value!["imagePath"] as! String
-        self.title = snapshot.value!["title"] as! String
-        self.description = snapshot.value!["description"] as! String
+        let snapshotValue = snapshot.value as! [String:Any]
+        self.latitude = snapshotValue["latitude"] as! CLLocationDegrees
+        self.longitude = snapshotValue["longitude"] as! CLLocationDegrees
+        self.imagePath = snapshotValue["imagePath"] as! String
+        self.title = snapshotValue["title"] as! String
+        self.description = snapshotValue["description"] as! String
+        if let date = snapshotValue["date"] as? NSNumber {
+            self.dateTaken = Date(timeIntervalSinceReferenceDate: date.doubleValue)
+        }
         self.identifier = snapshot.key
     }
     

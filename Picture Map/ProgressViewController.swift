@@ -28,7 +28,7 @@ class ProgressViewController: UIViewController {
         self.indicatorBackgroundView.layer.cornerRadius = 7
     }
     
-    func updateProgress(progress: NSProgress) {
+    func updateProgress(progress: Progress) {
         self.progressView.progress = Float(progress.fractionCompleted)
     }
 }

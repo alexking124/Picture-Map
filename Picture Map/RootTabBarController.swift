@@ -17,13 +17,13 @@ class RootTabBarController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.tabBar.hidden = true
+        self.tabBar.isHidden = true
         
         self.viewControllers = [MapViewController(), WelcomeViewController()]
 
         // Do any additional setup after loading the view.
         
-        self.authStateListenerToken = FIRAuth.auth()?.addAuthStateDidChangeListener({ (auth, user) in
+        self.authStateListenerToken = FIRAuth.auth()?.addStateDidChangeListener({ (auth, user) in
             if user != nil {
                 self.selectedIndex = 0
             } else {

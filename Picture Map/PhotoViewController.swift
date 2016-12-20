@@ -22,6 +22,7 @@ class PhotoViewController: UIViewController, UIScrollViewDelegate {
     @IBOutlet weak var bottomContentView: UIView!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var descriptionLabel: UILabel!
+    @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var loadingIndicator: UIActivityIndicatorView!
     @IBOutlet var doubleTapRecognizer: UITapGestureRecognizer!
     @IBOutlet var singleTapRecognizer: UITapGestureRecognizer!
@@ -44,7 +45,7 @@ class PhotoViewController: UIViewController, UIScrollViewDelegate {
         
         self.scrollView.delegate = self
         
-        ImageLoader.sharedLoader.imageForPin(self.pin, completion: { (image) in
+        ImageLoader.sharedLoader.imageForPin(pin: self.pin, completion: { (image) in
 //            self.imageView.image = image
             self.secondaryImageView.image = image
 //            self.updateScrollViewForNewImage()
@@ -52,14 +53,22 @@ class PhotoViewController: UIViewController, UIScrollViewDelegate {
         })
         
         if self.pin.title.isEmpty && self.pin.description.isEmpty {
-            self.bottomContentView.hidden = true
+            self.bottomContentView.isHidden = true
         } else {
             self.titleLabel.text = self.pin.title
             self.descriptionLabel.text = self.pin.description
         }
         
-        self.doubleTapRecognizer.enabled = false
-        self.singleTapRecognizer.requireGestureRecognizerToFail(self.doubleTapRecognizer)
+        if self.pin.dateTaken as Date != NSDate.distantPast {
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateStyle = DateFormatter.Style.medium
+            self.dateLabel.text = dateFormatter.string(from: self.pin.dateTaken as Date)
+        } else {
+            self.dateLabel.isHidden = true
+        }
+        
+        self.doubleTapRecognizer.isEnabled = false
+        self.singleTapRecognizer.require(toFail: self.doubleTapRecognizer)
     }
     
 //    override func viewDidAppear(animated: Bool) {
@@ -93,40 +102,40 @@ class PhotoViewController: UIViewController, UIScrollViewDelegate {
         self.scrollView.zoomScale = self.minimumZoomScale
     }
     
-    @IBAction func backPressed(sender: AnyObject) {
-        self.presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
+    @IBAction func backPressed(_ sender: AnyObject) {
+        self.presentingViewController?.dismiss(animated: true, completion: nil)
     }
     
-    @IBAction func editButtonPressed(sender: AnyObject) {
-        let editAlert = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
+    @IBAction func editButtonPressed(_ sender: AnyObject) {
+        let editAlert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         
-        let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
         editAlert.addAction(cancelAction)
         
-        let deleteAction = UIAlertAction(title: "Delete", style: .Default) { (action) in
-            self.deleteButtonPressed()
-        }
-        editAlert.addAction(deleteAction)
-        
-        let editAction = UIAlertAction(title: "Edit", style: .Default) { (action) in
+        let editAction = UIAlertAction(title: "Edit", style: .default) { (action) in
             
         }
         editAlert.addAction(editAction)
         
-        self.presentViewController(editAlert, animated: true, completion: nil)
+        let deleteAction = UIAlertAction(title: "Delete", style: .default) { (action) in
+            self.deleteButtonPressed()
+        }
+        editAlert.addAction(deleteAction)
+        
+        self.present(editAlert, animated: true, completion: nil)
     }
     
     func deleteButtonPressed() {
-        let deleteAlert = UIAlertController(title: "Confirm Delete", message: "Are you sure you want to delete this photo?", preferredStyle: .Alert)
-        let confirmAction = UIAlertAction(title: "Delete", style: .Destructive) { (action) in
+        let deleteAlert = UIAlertController(title: "Confirm Delete", message: "Are you sure you want to delete this photo?", preferredStyle: .alert)
+        let confirmAction = UIAlertAction(title: "Delete", style: .destructive) { (action) in
             //Delete image
             self.deleteCurrentImage()
-            self.presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
+            self.presentingViewController?.dismiss(animated: true, completion: nil)
         }
-        let cancelAction = UIAlertAction(title: "Cancel", style: .Default, handler: nil)
+        let cancelAction = UIAlertAction(title: "Cancel", style: .default, handler: nil)
         deleteAlert.addAction(cancelAction)
         deleteAlert.addAction(confirmAction)
-        self.presentViewController(deleteAlert, animated: true, completion: nil)
+        self.present(deleteAlert, animated: true, completion: nil)
     }
     
     private func deleteCurrentImage() {
@@ -140,18 +149,18 @@ class PhotoViewController: UIViewController, UIScrollViewDelegate {
         pinReference.removeValue()
         
         let usageReference = databaseReference.child("limit").child(userID)
-        usageReference.observeSingleEventOfType(.Value, withBlock: { (snapshot) in
+        usageReference.observeSingleEvent(of: .value, with: { (snapshot) in
             guard let value = snapshot.value else {
                 return
             }
-            usageReference.setValue(value.integerValue + 1)
+            usageReference.setValue((value as AnyObject).integerValue + 1)
         })
         
         let storageReference = FIRStorage.storage().reference()
         let downloadURL = self.pin.imagePath
-        let identifier = downloadURL.componentsSeparatedByString("%2F")[1].componentsSeparatedByString("?")[0]
+        let identifier = downloadURL.components(separatedBy: "%2F")[1].components(separatedBy: "?")[0]
         let remotePath = String(format: "%@/%@", userID, identifier)
-        storageReference.child(remotePath).deleteWithCompletion { (error) in
+        storageReference.child(remotePath).delete { (error) in
             if (error != nil) {
                 print("Error deleting photo from storage: \(error)")
             }
@@ -159,8 +168,8 @@ class PhotoViewController: UIViewController, UIScrollViewDelegate {
         }
     }
     
-    @IBAction func doubleTappedImage(sender: AnyObject) {
-        UIView.animateWithDuration(0.3) {
+    @IBAction func doubleTappedImage(_ sender: AnyObject) {
+        UIView.animate(withDuration: 0.3) {
             if self.scrollView.zoomScale != self.minimumZoomScale {
                 self.scrollView.zoomScale = self.minimumZoomScale
             } else {
@@ -169,15 +178,16 @@ class PhotoViewController: UIViewController, UIScrollViewDelegate {
         }
     }
     
-    @IBAction func singleTappedImage(sender: AnyObject) {
-        UIView.animateWithDuration(0.3) {
+    @IBAction func singleTappedImage(_ sender: AnyObject) {
+        UIView.animate(withDuration: 0.3) {
             self.bottomContentView.alpha = 1.0 - self.bottomContentView.alpha
             self.backButton.alpha = 1.0 - self.backButton.alpha
             self.editButton.alpha = 1.0 - self.editButton.alpha
         }
     }
     
-    func viewForZoomingInScrollView(scrollView: UIScrollView) -> UIView? {
+    func viewForZooming(in scrollView: UIScrollView) -> UIView? {
         return self.imageView
     }
+    
 }

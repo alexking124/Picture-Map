@@ -23,40 +23,40 @@ class LoginViewController: UIViewController {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-        self.logInButton.enabled = false
-        self.navigationController?.navigationBarHidden = true
-        self.emailImageView.tintColor = UIColor.darkGrayColor()
-        self.passwordImageView.tintColor = UIColor.darkGrayColor()
+        self.logInButton.isEnabled = false
+        self.navigationController?.isNavigationBarHidden = true
+        self.emailImageView.tintColor = UIColor.darkGray
+        self.passwordImageView.tintColor = UIColor.darkGray
     }
     
-    @IBAction func backButtonPressed(sender: AnyObject) {
-        self.presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
+    @IBAction func backButtonPressed(_ sender: AnyObject) {
+        self.presentingViewController?.dismiss(animated: true, completion: nil)
     }
     
-    @IBAction func textFieldChanged(sender: AnyObject) {
+    @IBAction func textFieldChanged(_ sender: AnyObject) {
         if (self.emailTextField.text!.isEmpty || self.passwordTextField.text!.isEmpty) {
-            self.logInButton.enabled = false
+            self.logInButton.isEnabled = false
         } else {
-            self.logInButton.enabled = true
+            self.logInButton.isEnabled = true
         }
     }
 
-    @IBAction func logInButtonPressed(sender: AnyObject) {
-        FIRAuth.auth()?.signInWithEmail(self.emailTextField.text!, password: self.passwordTextField.text!, completion: { (user, error) in
+    @IBAction func logInButtonPressed(_ sender: AnyObject) {
+        FIRAuth.auth()?.signIn(withEmail: self.emailTextField.text!, password: self.passwordTextField.text!, completion: { (user, error) in
 //            print("User: \(user), error: \(error)")
             if (error != nil) {
                 print("Error logging in: \(error)")
-                let errorAlert = UIAlertController(title: "Error logging in", message: error?.localizedDescription, preferredStyle: .Alert)
-                let defaultAction = UIAlertAction(title: "OK", style: .Default, handler: nil)
+                let errorAlert = UIAlertController(title: "Error logging in", message: error?.localizedDescription, preferredStyle: .alert)
+                let defaultAction = UIAlertAction(title: "OK", style: .default, handler: nil)
                 errorAlert.addAction(defaultAction)
-                self.presentViewController(errorAlert, animated: true, completion: nil)
+                self.present(errorAlert, animated: true, completion: nil)
             } else {
-                self.presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
+                self.presentingViewController?.dismiss(animated: true, completion: nil)
             }
         })
     }
     
-    @IBAction func signUpButtonPressed(sender: AnyObject) {
+    @IBAction func signUpButtonPressed(_ sender: AnyObject) {
         self.navigationController?.pushViewController(SignUpViewController(), animated: true)
     }
     

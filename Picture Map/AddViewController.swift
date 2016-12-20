@@ -29,59 +29,60 @@ class AddViewController: UIViewController, UINavigationControllerDelegate {
     @IBOutlet weak var descriptionPlaceholder: UILabel!
     
     var doneButton: UIBarButtonItem?
+    var photoDate: Date = Date.distantPast
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let camera = GMSCameraPosition.cameraWithLatitude(37.0902, longitude: -95.7129, zoom: 3)
+        let camera = GMSCameraPosition.camera(withLatitude: 37.0902, longitude: -95.7129, zoom: 3)
         self.previewMapView.camera = camera
-        self.previewMapView.bringSubviewToFront(self.markerImageView)
-        self.previewMapView.bringSubviewToFront(self.overlayView)
+        self.previewMapView.bringSubview(toFront: self.markerImageView)
+        self.previewMapView.bringSubview(toFront: self.overlayView)
         
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Back", style: UIBarButtonItemStyle.Plain, target: self, action: #selector(backPressed))
-        self.doneButton = UIBarButtonItem(title: "Done", style: .Plain, target: self, action: #selector(donePressed))
-        self.doneButton?.enabled = false
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Back", style: UIBarButtonItemStyle.plain, target: self, action: #selector(backPressed))
+        self.doneButton = UIBarButtonItem(title: "Done", style: .plain, target: self, action: #selector(donePressed))
+        self.doneButton?.isEnabled = false
         self.navigationItem.rightBarButtonItem = self.doneButton
         
         self.descriptionTextView.delegate = self
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         registerKeyboardNotifications()
     }
     
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         unregisterKeyboardNotifications()
     }
     
     func registerKeyboardNotifications() {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(keyboardDidShow(_:)), name: UIKeyboardDidShowNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(AddViewController.keyboardDidShow), name: NSNotification.Name.UIKeyboardDidShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(AddViewController.keyboardWillHide), name: NSNotification.Name.UIKeyboardDidHide, object: nil)
     }
     
     func unregisterKeyboardNotifications() {
-        NSNotificationCenter.defaultCenter().removeObserver(self)
+        NotificationCenter.default.removeObserver(self)
     }
     
     func keyboardDidShow(notification: NSNotification) {
-        let userInfo: NSDictionary = notification.userInfo!
-        let keyboardSize = userInfo.objectForKey(UIKeyboardFrameBeginUserInfoKey)!.CGRectValue.size
+        let userInfo: NSDictionary = notification.userInfo! as NSDictionary
+        let keyboardSize = (userInfo.object(forKey: UIKeyboardFrameBeginUserInfoKey)! as AnyObject).cgRectValue.size
         let contentInsets = UIEdgeInsetsMake(0, 0, keyboardSize.height, 0)
         self.scrollView.contentInset = contentInsets
         self.scrollView.scrollIndicatorInsets = contentInsets
         
         var viewRect = view.frame
         viewRect.size.height -= keyboardSize.height
-        if CGRectContainsPoint(viewRect, self.descriptionTextView.frame.origin) {
+        if viewRect.contains(self.descriptionTextView.frame.origin) {
             self.scrollView.scrollRectToVisible(viewRect, animated: true)
         }
     }
     
     func keyboardWillHide(notification: NSNotification) {
-        self.scrollView.contentInset = UIEdgeInsetsZero
-        self.scrollView.scrollIndicatorInsets = UIEdgeInsetsZero
+        self.scrollView.contentInset = UIEdgeInsets.zero
+        self.scrollView.scrollIndicatorInsets = UIEdgeInsets.zero
     }
     
     override func viewDidLayoutSubviews() {
@@ -92,7 +93,7 @@ class AddViewController: UIViewController, UINavigationControllerDelegate {
     
     func backPressed() {
         self.view.endEditing(true)
-        self.presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
+        self.presentingViewController?.dismiss(animated: true, completion: nil)
     }
     
     func donePressed() {
@@ -102,88 +103,92 @@ class AddViewController: UIViewController, UINavigationControllerDelegate {
         guard let userID = currentUser?.uid else {
             return
         }
-        let remoteFilePath = String(format: "%@/%@", userID, NSUUID().UUIDString)
+        let remoteFilePath = String(format: "%@/%@", userID, NSUUID().uuidString)
         
         let storageReference = FIRStorage.storage().reference()
         let metadata = FIRStorageMetadata()
         metadata.contentType = "image/jpeg"
         
         let progressViewController = ProgressViewController()
-        self.navigationController!.view.fillWithView(progressViewController.view)
-        let uploadTask = storageReference.child(remoteFilePath).putData(UIImageJPEGRepresentation(self.imagePreview.image!, 0.1)!, metadata: metadata, completion: { (storageMetadata, error) in
+        self.navigationController!.view.fillWithView(view: progressViewController.view)
+        let uploadTask = storageReference.child(remoteFilePath).put(UIImageJPEGRepresentation(self.imagePreview.image!, 0.1)!, metadata: metadata, completion: { (storageMetadata, error) in
             if let error = error {
                 print(error.localizedDescription)
             } else {
                 let currentLocation = self.previewMapView.camera.target
                 let pinMetadata = ["latitude": currentLocation.latitude,
                                 "longitude": currentLocation.longitude,
-                                "imagePath": storageMetadata?.downloadURL()?.absoluteString as! AnyObject,
-                                "title": self.titleLabel.text as! AnyObject,
-                                "description": self.descriptionTextView.text]
+                                "imagePath": storageMetadata?.downloadURL()?.absoluteString as AnyObject,
+                                "title": self.titleLabel.text as AnyObject,
+                                "description": self.descriptionTextView.text,
+                                "date": NSNumber.init(value: self.photoDate.timeIntervalSinceReferenceDate)] as [String : Any]
                 let databaseReference = FIRDatabase.database().reference()
                 let pinsReference = databaseReference.child("pins").child(userID).childByAutoId()
                 pinsReference.setValue(pinMetadata)
                 
                 let usageReference = databaseReference.child("limit").child(userID)
-                usageReference.observeSingleEventOfType(.Value, withBlock: { (snapshot) in
+                usageReference.observeSingleEvent(of: .value, with: { (snapshot) in
                     guard let value = snapshot.value else {
                         return
                     }
-                    usageReference.setValue(value.integerValue - 1)
+                    usageReference.setValue((value as AnyObject).integerValue - 1)
                 })
             }
             
-            self.presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
+            self.presentingViewController?.dismiss(animated: true, completion: nil)
         })
-        uploadTask.observeStatus(.Progress, handler: { (snapshot) in
+        uploadTask.observe(.progress, handler: { (snapshot) in
             guard let progress = snapshot.progress else {
                 return
             }
-            progressViewController.updateProgress(progress)
+            progressViewController.updateProgress(progress: progress)
         })
     }
     
     @IBAction func pickImage(sender: AnyObject) {
         let imagePicker = UIImagePickerController()
         imagePicker.delegate = self
-        self.presentViewController(imagePicker, animated: true, completion: nil)
+        self.present(imagePicker, animated: true, completion: nil)
     }
     
 }
 
 extension AddViewController: UIImagePickerControllerDelegate {
     
-    func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         imagePreview.image = info[UIImagePickerControllerOriginalImage] as? UIImage
         
-        self.dismissViewControllerAnimated(true, completion: nil)
-        self.doneButton?.enabled = true
-        self.pickImageButton.hidden = true
-        self.overlayView.hidden = true
+        self.dismiss(animated: true, completion: nil)
+        self.doneButton?.isEnabled = true
+        self.pickImageButton.isHidden = true
+        self.overlayView.isHidden = true
         
-        let asset = PHAsset.fetchAssetsWithALAssetURLs([info[UIImagePickerControllerReferenceURL] as! NSURL], options: nil).firstObject as! PHAsset
-        if let location = asset.location {
+        let asset = PHAsset.fetchAssets(withALAssetURLs: [(info[UIImagePickerControllerReferenceURL] as! NSURL) as URL], options: nil).firstObject
+        if let location = asset!.location {
             self.previewMapView.moveCamera(GMSCameraUpdate.setTarget(location.coordinate, zoom: 8.0))
+        }
+        if let date = asset!.creationDate {
+            photoDate = date
         }
     }
     
-    func imagePickerControllerDidCancel(picker: UIImagePickerController) {
-        self.dismissViewControllerAnimated(true, completion: nil)
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        self.dismiss(animated: true, completion: nil)
     }
     
 }
 
 extension AddViewController: UITextViewDelegate {
     
-    func textViewDidChange(textView: UITextView) {
+    func textViewDidChange(_ textView: UITextView) {
         if textView.text == "" {
-            self.descriptionPlaceholder.hidden = false
+            self.descriptionPlaceholder.isHidden = false
         } else {
-            self.descriptionPlaceholder.hidden = true
+            self.descriptionPlaceholder.isHidden = true
         }
     }
     
-    func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         if text == "\n" {
             textView.resignFirstResponder()
             return false
@@ -195,7 +200,7 @@ extension AddViewController: UITextViewDelegate {
 
 extension AddViewController: UITextFieldDelegate {
     
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         if textField == self.titleLabel {
             self.descriptionTextView.becomeFirstResponder()
         }

@@ -22,13 +22,12 @@ class WelcomeViewController: UIViewController {
         
         self.logInButton.layer.cornerRadius = 4
         
-        let camera = GMSCameraPosition.cameraWithLatitude(37.0902, longitude: -95.7129, zoom: 2)
+        let camera = GMSCameraPosition.camera(withLatitude: 37.0902, longitude: -95.7129, zoom: 2)
         self.mapView.camera = camera
     }
     
-    @IBAction func logInButtonPressed(sender: AnyObject) {
+    @IBAction func loginButtonPressed(_ sender: Any) {
         let navigationController = UINavigationController(rootViewController: LoginViewController())
-        self.presentViewController(navigationController, animated: true, completion: nil)
+        self.present(navigationController, animated: true, completion: nil)
     }
-    
 }
