@@ -112,8 +112,13 @@ class PhotoViewController: UIViewController, UIScrollViewDelegate {
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
         editAlert.addAction(cancelAction)
         
-        let editAction = UIAlertAction(title: "Edit", style: .default) { (action) in
-            
+        let editAction = UIAlertAction(title: "Edit Date", style: .default) { (action) in
+            DatePickerDialog().show("Pick a date", datePickerMode: .date) {chosenDate in
+                self.dateLabel.isHidden = false
+                let dateFormatter = DateFormatter()
+                dateFormatter.dateStyle = DateFormatter.Style.medium
+                self.dateLabel.text = dateFormatter.string(from: chosenDate!)
+            }
         }
         editAlert.addAction(editAction)
         

@@ -62,3 +62,21 @@ class SignUpViewController: UIViewController {
     }
 
 }
+
+extension SignUpViewController: UITextFieldDelegate {
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        
+        if textField === emailTextField {
+            passwordTextField.becomeFirstResponder()
+        } else if textField === passwordTextField {
+            confirmPasswordImageView.becomeFirstResponder()
+        } else if textField === confirmPasswordTextField {
+            confirmPasswordTextField.resignFirstResponder()
+            self.signUpButtonAction(signUpButton)
+        }
+        
+        return true
+    }
+    
+}
