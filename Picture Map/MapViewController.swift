@@ -51,6 +51,7 @@ class MapViewController: UIViewController {
                 self.childAddedObserverHandle = 0
                 self.childChangedObserverHandle = 0
                 self.childRemovedObserverHandle = 0
+                self.markers = Set<GMSMarker>()
                 self.mapView.clear()
                 self.addButton.isEnabled = false
             }
