@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		3911B8E41DFF8B1B00376AE5 /* DatePickerDialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3911B8E31DFF8B1B00376AE5 /* DatePickerDialog.swift */; };
+		391B5CBD1E2708C000B5BC02 /* LocationPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 391B5CBC1E2708C000B5BC02 /* LocationPickerViewController.swift */; };
+		391B5CBF1E2708D100B5BC02 /* LocationPickerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 391B5CBE1E2708D100B5BC02 /* LocationPickerViewController.xib */; };
 		39378B061D30641D005B927E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39378B051D30641D005B927E /* AppDelegate.swift */; };
 		39378B081D30641D005B927E /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39378B071D30641D005B927E /* MapViewController.swift */; };
 		39378B0D1D30641D005B927E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 39378B0C1D30641D005B927E /* Assets.xcassets */; };
@@ -44,6 +46,8 @@
 /* Begin PBXFileReference section */
 		302B872E9BFE17D6CC92801F /* Pods_Picture_Map.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Picture_Map.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3911B8E31DFF8B1B00376AE5 /* DatePickerDialog.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatePickerDialog.swift; sourceTree = "<group>"; };
+		391B5CBC1E2708C000B5BC02 /* LocationPickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationPickerViewController.swift; sourceTree = "<group>"; };
+		391B5CBE1E2708D100B5BC02 /* LocationPickerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LocationPickerViewController.xib; sourceTree = "<group>"; };
 		39378B021D30641D005B927E /* Picture Map.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Picture Map.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		39378B051D30641D005B927E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		39378B071D30641D005B927E /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
@@ -152,6 +156,8 @@
 				6B8CD47C1D405AF70088CBA7 /* UserProfile.swift */,
 				39F5CF301DD3CB4000AA5DDB /* WelcomeViewController.swift */,
 				39F5CF321DD3CB5B00AA5DDB /* WelcomeViewController.xib */,
+				391B5CBC1E2708C000B5BC02 /* LocationPickerViewController.swift */,
+				391B5CBE1E2708D100B5BC02 /* LocationPickerViewController.xib */,
 			);
 			path = "Picture Map";
 			sourceTree = "<group>";
@@ -272,6 +278,7 @@
 				6B72EA8C1D3829FE00319359 /* PhotoViewController.xib in Resources */,
 				39378B101D30641D005B927E /* LaunchScreen.storyboard in Resources */,
 				39378B181D3064D9005B927E /* GoogleService-Info.plist in Resources */,
+				391B5CBF1E2708D100B5BC02 /* LocationPickerViewController.xib in Resources */,
 				6BB97BF91D3FF4BA00D3F8A0 /* SettingsViewController.xib in Resources */,
 				39D6101B1DDE2DFE0098BB61 /* SignUpViewController.xib in Resources */,
 				39CDA40C1D341A550081175A /* AddViewController.xib in Resources */,
@@ -394,6 +401,7 @@
 				6BB97BF11D3D71C500D3F8A0 /* ImageLoader.swift in Sources */,
 				6B72EA8E1D382A1000319359 /* PhotoViewController.swift in Sources */,
 				39D6101E1DDE51370098BB61 /* RootTabBarController.swift in Sources */,
+				391B5CBD1E2708C000B5BC02 /* LocationPickerViewController.swift in Sources */,
 				39D6101A1DDE2DFE0098BB61 /* SignUpViewController.swift in Sources */,
 				39A3FB791E0B6F3400F283EA /* DatabaseInterface.swift in Sources */,
 				6B8CD47D1D405AF70088CBA7 /* UserProfile.swift in Sources */,

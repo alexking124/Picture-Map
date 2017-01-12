@@ -27,21 +27,25 @@ class AddViewController: UIViewController, UINavigationControllerDelegate {
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var contentView: UIView!
     @IBOutlet weak var descriptionPlaceholder: UILabel!
+    @IBOutlet weak var changeLocationButton: UIButton!
     
     var doneButton: UIBarButtonItem?
     var photoDate: Date = Date.distantPast
+    var assetLocation: CLLocationCoordinate2D?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let camera = GMSCameraPosition.camera(withLatitude: 37.0902, longitude: -95.7129, zoom: 3)
+        let camera = GMSCameraPosition.camera(withLatitude: 37.0902, longitude: -95.7129, zoom: 2)
         self.previewMapView.camera = camera
         self.previewMapView.bringSubview(toFront: self.markerImageView)
         self.previewMapView.bringSubview(toFront: self.overlayView)
+        self.previewMapView.bringSubview(toFront: changeLocationButton)
         
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Back", style: UIBarButtonItemStyle.plain, target: self, action: #selector(backPressed))
         self.doneButton = UIBarButtonItem(title: "Done", style: .plain, target: self, action: #selector(donePressed))
         self.doneButton?.isEnabled = false
+        self.changeLocationButton.isEnabled = false
         self.navigationItem.rightBarButtonItem = self.doneButton
         
         self.descriptionTextView.delegate = self
@@ -55,6 +59,12 @@ class AddViewController: UIViewController, UINavigationControllerDelegate {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         unregisterKeyboardNotifications()
+    }
+    
+    @IBAction func changeLocationButtonPressed(_ sender: Any) {
+        let pickerViewController = LocationPickerViewController(assetLocation)
+        pickerViewController.delegate  = self
+        self.present(pickerViewController, animated: true, completion: nil);
     }
     
     func registerKeyboardNotifications() {
@@ -151,12 +161,13 @@ extension AddViewController: UIImagePickerControllerDelegate {
         imagePreview.image = info[UIImagePickerControllerOriginalImage] as? UIImage
         
         self.dismiss(animated: true, completion: nil)
-        self.doneButton?.isEnabled = true
         self.pickImageButton.isHidden = true
-        self.overlayView.isHidden = true
+        self.changeLocationButton.isEnabled = true
         
         let asset = PHAsset.fetchAssets(withALAssetURLs: [(info[UIImagePickerControllerReferenceURL] as! NSURL) as URL], options: nil).firstObject
         if let location = asset!.location {
+            self.doneButton?.isEnabled = true
+            assetLocation = location.coordinate
             self.previewMapView.moveCamera(GMSCameraUpdate.setTarget(location.coordinate, zoom: 8.0))
         }
         if let date = asset!.creationDate {
@@ -168,6 +179,14 @@ extension AddViewController: UIImagePickerControllerDelegate {
         self.dismiss(animated: true, completion: nil)
     }
     
+}
+
+extension AddViewController: LocationPickerDelegate {
+    func didFinishPickingLocation(location: CLLocationCoordinate2D) {
+        self.dismiss(animated: true, completion: nil)
+        previewMapView.moveCamera(GMSCameraUpdate.setTarget(location, zoom: 8))
+        self.doneButton?.isEnabled = true
+    }
 }
 
 extension AddViewController: UITextViewDelegate {

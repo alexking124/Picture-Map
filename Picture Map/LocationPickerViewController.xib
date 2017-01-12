@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="16C67" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="LocationPickerViewController" customModule="Picture_Map" customModuleProvider="target">
+            <connections>
+                <outlet property="doneButton" destination="XjD-Bb-XqU" id="kf6-6K-2Ns"/>
+                <outlet property="mapView" destination="5qE-sg-fkF" id="LsT-9u-Jqj"/>
+                <outlet property="pinImageView" destination="vRk-SE-wyX" id="yDf-NV-XFy"/>
+                <outlet property="useDefaultButton" destination="E1r-WF-bpC" id="h0N-6Y-iKW"/>
+                <outlet property="view" destination="iN0-l3-epB" id="IN4-je-eZz"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5qE-sg-fkF" userLabel="Map View" customClass="GMSMapView">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                    <subviews>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Pin Marker" translatesAutoresizingMaskIntoConstraints="NO" id="vRk-SE-wyX">
+                            <rect key="frame" x="162" y="284" width="50" height="50"/>
+                            <constraints>
+                                <constraint firstAttribute="width" secondItem="vRk-SE-wyX" secondAttribute="height" multiplier="1:1" id="BfD-JP-sTn"/>
+                                <constraint firstAttribute="width" constant="50" id="hp9-nE-i5R"/>
+                            </constraints>
+                        </imageView>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XjD-Bb-XqU">
+                            <rect key="frame" x="302" y="25" width="53" height="26"/>
+                            <color key="backgroundColor" white="1" alpha="0.89755458047945202" colorSpace="calibratedWhite"/>
+                            <inset key="contentEdgeInsets" minX="8" minY="4" maxX="8" maxY="4"/>
+                            <state key="normal" title="Done"/>
+                            <connections>
+                                <action selector="doneButtonPressed:" destination="-1" eventType="touchUpInside" id="TLF-nO-vnH"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="E1r-WF-bpC">
+                            <rect key="frame" x="20" y="25" width="97" height="26"/>
+                            <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.89755458047945202" colorSpace="custom" customColorSpace="sRGB"/>
+                            <inset key="contentEdgeInsets" minX="8" minY="4" maxX="8" maxY="4"/>
+                            <state key="normal" title="Use Default"/>
+                            <connections>
+                                <action selector="useDefaultButtonPressed:" destination="-1" eventType="touchUpInside" id="USq-fz-0Nq"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstItem="vRk-SE-wyX" firstAttribute="bottom" secondItem="5qE-sg-fkF" secondAttribute="centerY" id="8uo-Xp-Pjr"/>
+                        <constraint firstItem="vRk-SE-wyX" firstAttribute="centerX" secondItem="5qE-sg-fkF" secondAttribute="centerX" id="H7s-jZ-MVy"/>
+                        <constraint firstItem="XjD-Bb-XqU" firstAttribute="top" secondItem="5qE-sg-fkF" secondAttribute="top" constant="25" id="TWz-VL-ORh"/>
+                        <constraint firstAttribute="trailing" secondItem="XjD-Bb-XqU" secondAttribute="trailing" constant="20" symbolic="YES" id="Vu4-ge-jTv"/>
+                        <constraint firstItem="E1r-WF-bpC" firstAttribute="leading" secondItem="5qE-sg-fkF" secondAttribute="leading" constant="20" symbolic="YES" id="dmT-FS-n3d"/>
+                        <constraint firstItem="E1r-WF-bpC" firstAttribute="top" secondItem="5qE-sg-fkF" secondAttribute="top" constant="25" id="f6W-gI-xf5"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="5qE-sg-fkF" secondAttribute="bottom" id="6FU-Rz-Ja5"/>
+                <constraint firstItem="5qE-sg-fkF" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="9Pm-UK-IVk"/>
+                <constraint firstItem="5qE-sg-fkF" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="lrF-aQ-njD"/>
+                <constraint firstAttribute="trailing" secondItem="5qE-sg-fkF" secondAttribute="trailing" id="nAv-l1-oHV"/>
+            </constraints>
+        </view>
+    </objects>
+    <resources>
+        <image name="Pin Marker" width="363" height="592"/>
+    </resources>
+</document>
