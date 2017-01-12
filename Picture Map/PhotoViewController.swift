@@ -6,6 +6,7 @@
 //  Copyright © 2016 Alex King. All rights reserved.
 //
 
+import CoreLocation
 import UIKit
 
 import FirebaseAuth
@@ -66,10 +67,11 @@ class PhotoViewController: UIViewController, UIScrollViewDelegate {
     }
     
     func loadDate() {
-        if pin.dateTaken as Date != NSDate.distantPast {
+        
+        if pin.getDate() != Date.distantPast {
             let dateFormatter = DateFormatter()
             dateFormatter.dateStyle = DateFormatter.Style.medium
-            dateLabel.text = dateFormatter.string(from: self.pin.dateTaken as Date)
+            dateLabel.text = dateFormatter.string(from: pin.getDate())
             dateLabel.isHidden = false
         } else {
             dateLabel.isHidden = true
@@ -117,7 +119,14 @@ class PhotoViewController: UIViewController, UIScrollViewDelegate {
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
         editAlert.addAction(cancelAction)
         
-        let editAction = UIAlertAction(title: "Edit Date", style: .default) { (action) in
+        let editLocationAction = UIAlertAction(title: "Edit Location", style: .default) { (action) in
+            let locationPickerViewController = LocationPickerViewController(CLLocationCoordinate2DMake(self.pin.latitude, self.pin.longitude))
+            locationPickerViewController.delegate = self
+            self.present(locationPickerViewController, animated: true, completion: nil)
+        }
+        editAlert.addAction(editLocationAction)
+        
+        let editDateAction = UIAlertAction(title: "Edit Date", style: .default) { (action) in
             DatePickerDialog().show("Pick a date", datePickerMode: .date) { [unowned self] chosenDate in
                 if let chosenDate = chosenDate {
                     self.pin.changeDate(chosenDate)
@@ -129,7 +138,7 @@ class PhotoViewController: UIViewController, UIScrollViewDelegate {
                 }
             }
         }
-        editAlert.addAction(editAction)
+        editAlert.addAction(editDateAction)
         
         let deleteAction = UIAlertAction(title: "Delete", style: .default) { (action) in
             self.deleteButtonPressed()
@@ -192,6 +201,22 @@ class PhotoViewController: UIViewController, UIScrollViewDelegate {
     
     func viewForZooming(in scrollView: UIScrollView) -> UIView? {
         return self.imageView
+    }
+    
+}
+
+extension PhotoViewController: LocationPickerDelegate {
+    
+    func didFinishPickingLocation(location: CLLocationCoordinate2D) {
+        self.pin.latitude = location.latitude
+        self.pin.longitude = location.longitude
+        
+        var metadata = self.pin.metadataDictionary()
+        metadata["latitude"] = location.latitude
+        metadata["longitude"] = location.longitude
+        DatabaseInterface.shared.updatePin(self.pin.identifier, metadata: metadata)
+        
+        self.dismiss(animated: true, completion: nil)
     }
     
 }

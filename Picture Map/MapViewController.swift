@@ -25,6 +25,9 @@ class MapViewController: UIViewController {
     
     private var childAddedObserverHandle: UInt = 0
     private var childRemovedObserverHandle: UInt = 0
+    private var childChangedObserverHandle: UInt = 0
+    
+    private var markers = Set<GMSMarker>()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -46,6 +49,7 @@ class MapViewController: UIViewController {
                 self.addButton.isEnabled = true
             } else {
                 self.childAddedObserverHandle = 0
+                self.childChangedObserverHandle = 0
                 self.childRemovedObserverHandle = 0
                 self.mapView.clear()
                 self.addButton.isEnabled = false
@@ -83,18 +87,41 @@ class MapViewController: UIViewController {
         
         let databaseReference = FIRDatabase.database().reference()
         let userReference = databaseReference.child("pins").child(currentUser.uid)
-        if (self.childAddedObserverHandle == 0) {
-            self.childAddedObserverHandle = userReference.observe(.childAdded, with: { (snapshot) in
+        if childAddedObserverHandle == 0 {
+            childAddedObserverHandle = userReference.observe(.childAdded, with: { (snapshot) in
                 self.addPinFromSnapshot(snapshot: snapshot)
             })
         }
         
-        if (self.childRemovedObserverHandle == 0) {
-            self.childRemovedObserverHandle = userReference.observe(.childRemoved, with: { (snapshot) in
-                guard let marker = self.lastTappedMarker else {
-                    return
+        if childChangedObserverHandle == 0 {
+            childChangedObserverHandle = userReference.observe(.childChanged, with: { (newSnapshot) in
+                let identifier = newSnapshot.key
+                for mapMarker in self.markers {
+                    if let userData = mapMarker.userData as? Pin {
+                        if identifier == userData.identifier {
+                            let snapshotValue = newSnapshot.value as! [String:Any]
+                            let latitude = snapshotValue["latitude"] as! CLLocationDegrees
+                            let longitude = snapshotValue["longitude"] as! CLLocationDegrees
+                            mapMarker.position = CLLocationCoordinate2DMake(latitude, longitude)
+                            break
+                        }
+                    }
                 }
-                marker.map = nil
+            })
+        }
+        
+        if childRemovedObserverHandle == 0 {
+            childRemovedObserverHandle = userReference.observe(.childRemoved, with: { (snapshot) in
+                let identifier = snapshot.key
+                for mapMarker in self.markers {
+                    if let userData = mapMarker.userData as? Pin {
+                        if identifier == userData.identifier {
+                            mapMarker.map = nil
+                            self.markers.remove(mapMarker)
+                            break
+                        }
+                    }
+                }
             })
         }
     }
@@ -105,6 +132,7 @@ class MapViewController: UIViewController {
         marker.groundAnchor = CGPoint(x: 0.5,y: 0.5)
         marker.map = self.mapView
         marker.userData = pin
+        markers.insert(marker)
         
         let markerView = UIImageView(image: UIImage(named: "empty_image"))
         ImageLoader.sharedLoader.imageForPin(pin: pin, completion: { (image) in

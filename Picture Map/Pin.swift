@@ -17,7 +17,7 @@ class Pin {
     var title: String = ""
     var description: String = ""
     var identifier: String = ""
-    var dateTaken: Date = Date.distantPast
+    var dateTaken: NSNumber = NSNumber.init(value: Date.distantPast.timeIntervalSinceReferenceDate)
     
     init() {}
     
@@ -29,13 +29,17 @@ class Pin {
         self.title = snapshotValue["title"] as! String
         self.description = snapshotValue["description"] as! String
         if let date = snapshotValue["date"] as? NSNumber {
-            self.dateTaken = Date(timeIntervalSinceReferenceDate: date.doubleValue)
+            self.dateTaken = date
         }
         self.identifier = snapshot.key
     }
     
+    func getDate() -> Date {
+        return Date(timeIntervalSinceReferenceDate: dateTaken.doubleValue)
+    }
+    
     func changeDate(_ date: Date) {
-        dateTaken = date
+        dateTaken = NSNumber.init(value: date.timeIntervalSinceReferenceDate)
     }
     
     func metadataDictionary() -> Dictionary<String, Any> {
