@@ -34,14 +34,19 @@ class Pin {
         self.identifier = snapshot.key
     }
     
-    class func parseFromSnapshot(snapshot: FIRDataSnapshot) -> [Pin] {
-        var pins = [Pin]()
-        
-        for child in snapshot.children {
-            let pin = Pin.init(snapshot: child as! FIRDataSnapshot)
-            pins.append(pin)
-        }
-        
-        return pins
+    func changeDate(_ date: Date) {
+        dateTaken = date
     }
+    
+    func metadataDictionary() -> Dictionary<String, Any> {
+        let pinMetadata = ["identifier": identifier,
+                           "latitude": latitude,
+                           "longitude": longitude,
+                           "imagePath": imagePath,
+                           "title": title,
+                           "description": description,
+                           "date": dateTaken] as [String : Any]
+        return pinMetadata
+    }
+    
 }

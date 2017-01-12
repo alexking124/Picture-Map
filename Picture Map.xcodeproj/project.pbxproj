@@ -13,6 +13,7 @@
 		39378B0D1D30641D005B927E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 39378B0C1D30641D005B927E /* Assets.xcassets */; };
 		39378B101D30641D005B927E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 39378B0E1D30641D005B927E /* LaunchScreen.storyboard */; };
 		39378B181D3064D9005B927E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 39378B171D3064D9005B927E /* GoogleService-Info.plist */; };
+		39A3FB791E0B6F3400F283EA /* DatabaseInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39A3FB781E0B6F3400F283EA /* DatabaseInterface.swift */; };
 		39CDA4051D3409AB0081175A /* MapViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 39CDA4041D3409AB0081175A /* MapViewController.xib */; };
 		39CDA4081D340E180081175A /* UIImageView+Download.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39CDA4071D340E180081175A /* UIImageView+Download.swift */; };
 		39CDA40A1D341A090081175A /* AddViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39CDA4091D341A090081175A /* AddViewController.swift */; };
@@ -50,6 +51,7 @@
 		39378B0F1D30641D005B927E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		39378B111D30641D005B927E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		39378B171D3064D9005B927E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		39A3FB781E0B6F3400F283EA /* DatabaseInterface.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseInterface.swift; sourceTree = "<group>"; };
 		39CDA4041D3409AB0081175A /* MapViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MapViewController.xib; sourceTree = "<group>"; };
 		39CDA4071D340E180081175A /* UIImageView+Download.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "UIImageView+Download.swift"; path = "Picture Map/UIImageView+Download.swift"; sourceTree = "<group>"; };
 		39CDA4091D341A090081175A /* AddViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddViewController.swift; sourceTree = "<group>"; };
@@ -129,6 +131,7 @@
 				39CDA4091D341A090081175A /* AddViewController.swift */,
 				39CDA40B1D341A550081175A /* AddViewController.xib */,
 				39378B051D30641D005B927E /* AppDelegate.swift */,
+				39A3FB781E0B6F3400F283EA /* DatabaseInterface.swift */,
 				6BB97BF41D3FEECE00D3F8A0 /* IAPHelper.swift */,
 				6BB97BF01D3D71C500D3F8A0 /* ImageLoader.swift */,
 				39F5CF361DDD3CE800AA5DDB /* LoginViewController.swift */,
@@ -392,6 +395,7 @@
 				6B72EA8E1D382A1000319359 /* PhotoViewController.swift in Sources */,
 				39D6101E1DDE51370098BB61 /* RootTabBarController.swift in Sources */,
 				39D6101A1DDE2DFE0098BB61 /* SignUpViewController.swift in Sources */,
+				39A3FB791E0B6F3400F283EA /* DatabaseInterface.swift in Sources */,
 				6B8CD47D1D405AF70088CBA7 /* UserProfile.swift in Sources */,
 				39CDA40A1D341A090081175A /* AddViewController.swift in Sources */,
 				6BB97BF51D3FEECE00D3F8A0 /* IAPHelper.swift in Sources */,

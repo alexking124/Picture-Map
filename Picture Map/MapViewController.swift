@@ -151,7 +151,7 @@ class MapViewController: UIViewController {
 
 extension MapViewController: CLLocationManagerDelegate {
     
-    private func locationManager(manager: CLLocationManager, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
         if status == CLAuthorizationStatus.authorizedWhenInUse {
             manager.startUpdatingLocation()
         }

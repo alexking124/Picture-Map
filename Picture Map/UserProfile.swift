@@ -19,18 +19,6 @@ class UserProfile {
         return FIRAuth.auth()?.currentUser
     }
     
-    class func isCurrentUserPaid() -> Bool {
-        
-        return false
-    }
-    
-    class func logInWithSignInDelegate(signInDelegate: GIDSignInDelegate, uiDelegate: GIDSignInUIDelegate) {
-        GIDSignIn.sharedInstance().clientID = FIRApp.defaultApp()?.options.clientID
-        GIDSignIn.sharedInstance().uiDelegate = uiDelegate
-        GIDSignIn.sharedInstance().delegate = signInDelegate
-        GIDSignIn.sharedInstance().signIn()
-    }
-    
     class func logOut() {
         do {
             try FIRAuth.auth()?.signOut()

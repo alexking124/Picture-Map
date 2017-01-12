@@ -59,16 +59,21 @@ class PhotoViewController: UIViewController, UIScrollViewDelegate {
             self.descriptionLabel.text = self.pin.description
         }
         
-        if self.pin.dateTaken as Date != NSDate.distantPast {
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateStyle = DateFormatter.Style.medium
-            self.dateLabel.text = dateFormatter.string(from: self.pin.dateTaken as Date)
-        } else {
-            self.dateLabel.isHidden = true
-        }
+        self.loadDate()
         
         self.doubleTapRecognizer.isEnabled = false
         self.singleTapRecognizer.require(toFail: self.doubleTapRecognizer)
+    }
+    
+    func loadDate() {
+        if pin.dateTaken as Date != NSDate.distantPast {
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateStyle = DateFormatter.Style.medium
+            dateLabel.text = dateFormatter.string(from: self.pin.dateTaken as Date)
+            dateLabel.isHidden = false
+        } else {
+            dateLabel.isHidden = true
+        }
     }
     
 //    override func viewDidAppear(animated: Bool) {
@@ -113,11 +118,15 @@ class PhotoViewController: UIViewController, UIScrollViewDelegate {
         editAlert.addAction(cancelAction)
         
         let editAction = UIAlertAction(title: "Edit Date", style: .default) { (action) in
-            DatePickerDialog().show("Pick a date", datePickerMode: .date) {chosenDate in
-                self.dateLabel.isHidden = false
-                let dateFormatter = DateFormatter()
-                dateFormatter.dateStyle = DateFormatter.Style.medium
-                self.dateLabel.text = dateFormatter.string(from: chosenDate!)
+            DatePickerDialog().show("Pick a date", datePickerMode: .date) { [unowned self] chosenDate in
+                if let chosenDate = chosenDate {
+                    self.pin.changeDate(chosenDate)
+                    self.loadDate()
+                    
+                    var metadata = self.pin.metadataDictionary()
+                    metadata["date"] = NSNumber.init(value: chosenDate.timeIntervalSinceReferenceDate)
+                    DatabaseInterface.shared.updatePin(self.pin.identifier, metadata: metadata)
+                }
             }
         }
         editAlert.addAction(editAction)
@@ -144,29 +153,19 @@ class PhotoViewController: UIViewController, UIScrollViewDelegate {
     }
     
     private func deleteCurrentImage() {
+        DatabaseInterface.shared.deletePin(pin.identifier)
+        
         let currentUser = FIRAuth.auth()?.currentUser
         guard let userID = currentUser?.uid else {
             return
         }
-        
-        let databaseReference = FIRDatabase.database().reference()
-        let pinReference = databaseReference.child("pins").child(userID).child(self.pin.identifier)
-        pinReference.removeValue()
-        
-        let usageReference = databaseReference.child("limit").child(userID)
-        usageReference.observeSingleEvent(of: .value, with: { (snapshot) in
-            guard let value = snapshot.value else {
-                return
-            }
-            usageReference.setValue((value as AnyObject).integerValue + 1)
-        })
         
         let storageReference = FIRStorage.storage().reference()
         let downloadURL = self.pin.imagePath
         let identifier = downloadURL.components(separatedBy: "%2F")[1].components(separatedBy: "?")[0]
         let remotePath = String(format: "%@/%@", userID, identifier)
         storageReference.child(remotePath).delete { (error) in
-            if (error != nil) {
+            if error != nil {
                 print("Error deleting photo from storage: \(error)")
             }
             

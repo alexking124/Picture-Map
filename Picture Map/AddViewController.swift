@@ -101,7 +101,7 @@ class AddViewController: UIViewController, UINavigationControllerDelegate {
         let currentUser = FIRAuth.auth()?.currentUser
         
         guard let userID = currentUser?.uid else {
-            return
+            fatalError("Couldn't get the current user!")
         }
         let remoteFilePath = String(format: "%@/%@", userID, NSUUID().uuidString)
         
@@ -122,17 +122,9 @@ class AddViewController: UIViewController, UINavigationControllerDelegate {
                                 "title": self.titleLabel.text as AnyObject,
                                 "description": self.descriptionTextView.text,
                                 "date": NSNumber.init(value: self.photoDate.timeIntervalSinceReferenceDate)] as [String : Any]
-                let databaseReference = FIRDatabase.database().reference()
-                let pinsReference = databaseReference.child("pins").child(userID).childByAutoId()
-                pinsReference.setValue(pinMetadata)
                 
-                let usageReference = databaseReference.child("limit").child(userID)
-                usageReference.observeSingleEvent(of: .value, with: { (snapshot) in
-                    guard let value = snapshot.value else {
-                        return
-                    }
-                    usageReference.setValue((value as AnyObject).integerValue - 1)
-                })
+                let pinReference = DatabaseInterface.shared.insertNewPin()
+                DatabaseInterface.shared.updatePin(pinReference.key, metadata: pinMetadata)
             }
             
             self.presentingViewController?.dismiss(animated: true, completion: nil)
@@ -145,7 +137,7 @@ class AddViewController: UIViewController, UINavigationControllerDelegate {
         })
     }
     
-    @IBAction func pickImage(sender: AnyObject) {
+    @IBAction func pickImage(_ sender: AnyObject) {
         let imagePicker = UIImagePickerController()
         imagePicker.delegate = self
         self.present(imagePicker, animated: true, completion: nil)
