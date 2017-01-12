@@ -11,7 +11,6 @@ import UIKit
 import Firebase
 import FirebaseAuth
 import GoogleMaps
-import GoogleSignIn
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -30,10 +29,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         return true
     }
-    
-    func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
-        return GIDSignIn.sharedInstance().handle(url as URL!, sourceApplication: Bundle.main.bundleIdentifier, annotation: options)
-    }
-    
+        
 }
 

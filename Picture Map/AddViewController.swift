@@ -13,7 +13,6 @@ import FirebaseAuth
 import FirebaseDatabase
 import FirebaseStorage
 import GoogleMaps
-import GoogleSignIn
 
 class AddViewController: UIViewController, UINavigationControllerDelegate {
     
@@ -41,6 +40,9 @@ class AddViewController: UIViewController, UINavigationControllerDelegate {
         self.previewMapView.bringSubview(toFront: self.markerImageView)
         self.previewMapView.bringSubview(toFront: self.overlayView)
         self.previewMapView.bringSubview(toFront: changeLocationButton)
+        
+        changeLocationButton.layer.cornerRadius = 3
+        previewMapView.layer.cornerRadius = 4
         
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Back", style: UIBarButtonItemStyle.plain, target: self, action: #selector(backPressed))
         self.doneButton = UIBarButtonItem(title: "Done", style: .plain, target: self, action: #selector(donePressed))
@@ -168,7 +170,7 @@ extension AddViewController: UIImagePickerControllerDelegate {
         if let location = asset!.location {
             self.doneButton?.isEnabled = true
             assetLocation = location.coordinate
-            self.previewMapView.moveCamera(GMSCameraUpdate.setTarget(location.coordinate, zoom: 8.0))
+            self.previewMapView.moveCamera(GMSCameraUpdate.setTarget(location.coordinate, zoom: 10.0))
         }
         if let date = asset!.creationDate {
             photoDate = date
@@ -184,7 +186,8 @@ extension AddViewController: UIImagePickerControllerDelegate {
 extension AddViewController: LocationPickerDelegate {
     func didFinishPickingLocation(location: CLLocationCoordinate2D) {
         self.dismiss(animated: true, completion: nil)
-        previewMapView.moveCamera(GMSCameraUpdate.setTarget(location, zoom: 8))
+        assetLocation = location
+        previewMapView.moveCamera(GMSCameraUpdate.setTarget(location, zoom: 10))
         self.doneButton?.isEnabled = true
     }
 }

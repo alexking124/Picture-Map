@@ -97,10 +97,12 @@
                                         </imageView>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zeG-4x-i5D">
                                             <rect key="frame" x="0.0" y="0.0" width="335" height="130"/>
-                                            <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.50128177978966282" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
                                         </view>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BYP-37-xpm">
-                                            <rect key="frame" x="109" y="65" width="116" height="30"/>
+                                            <rect key="frame" x="101" y="67" width="132" height="26"/>
+                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <inset key="contentEdgeInsets" minX="8" minY="4" maxX="8" maxY="4"/>
                                             <state key="normal" title="Change Location"/>
                                             <connections>
                                                 <action selector="changeLocationButtonPressed:" destination="-1" eventType="touchUpInside" id="ZLu-T7-1HD"/>
@@ -113,7 +115,7 @@
                                         <constraint firstItem="zeG-4x-i5D" firstAttribute="top" secondItem="EBd-qn-Bwc" secondAttribute="top" id="8oc-gj-hWa"/>
                                         <constraint firstItem="LKg-mS-88f" firstAttribute="bottom" secondItem="EBd-qn-Bwc" secondAttribute="centerY" id="Bs3-kO-lmB"/>
                                         <constraint firstAttribute="bottom" secondItem="zeG-4x-i5D" secondAttribute="bottom" id="Hy8-C2-LWv"/>
-                                        <constraint firstItem="BYP-37-xpm" firstAttribute="top" secondItem="EBd-qn-Bwc" secondAttribute="centerY" id="MTr-Pe-c08"/>
+                                        <constraint firstItem="BYP-37-xpm" firstAttribute="top" secondItem="EBd-qn-Bwc" secondAttribute="centerY" constant="2" id="MTr-Pe-c08"/>
                                         <constraint firstItem="zeG-4x-i5D" firstAttribute="leading" secondItem="EBd-qn-Bwc" secondAttribute="leading" id="S2w-zB-S7u"/>
                                         <constraint firstAttribute="trailing" secondItem="zeG-4x-i5D" secondAttribute="trailing" id="XEB-02-yQF"/>
                                         <constraint firstItem="BYP-37-xpm" firstAttribute="centerX" secondItem="EBd-qn-Bwc" secondAttribute="centerX" id="b4Y-Xu-nDT"/>

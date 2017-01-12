@@ -11,6 +11,5 @@ target 'Picture Map' do
   pod 'Firebase/Database'
   pod 'Firebase/Storage'
   pod 'GoogleMaps'
-  pod 'GoogleSignIn'
 
 end

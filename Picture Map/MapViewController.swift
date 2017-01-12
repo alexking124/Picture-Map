@@ -13,7 +13,6 @@ import Firebase
 import FirebaseAuth
 import FirebaseDatabase
 import GoogleMaps
-import GoogleSignIn
 
 class MapViewController: UIViewController {
     

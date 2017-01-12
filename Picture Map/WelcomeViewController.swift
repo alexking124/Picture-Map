@@ -9,7 +9,6 @@
 import UIKit
 
 import GoogleMaps
-import GoogleSignIn
 import Firebase
 
 class WelcomeViewController: UIViewController {

@@ -10,7 +10,6 @@ import UIKit
 
 import Firebase
 import FirebaseAuth
-import GoogleSignIn
 
 class SettingsViewController: UIViewController {
     
